@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "l5Y7Dg84RPQ6D/6yhIYqpxDyD0wl6oTYZEy3NdZ1XwGZ4vStzj1btmtnA5GkJwiB2+mL7rtgGabgAePgPTmgQQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\TopDownGame\\TopDownGame\\TopDownGame.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\leo.sundberg1\\.nuget\\packages\\raylib-cs\\4.5.0.4\\raylib-cs.4.5.0.4.nupkg.sha512",
+    "C:\\Users\\leo.sundberg1\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
