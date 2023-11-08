@@ -6,12 +6,12 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "TopDownGame/1.0.0": {
+      "TopDownGam/1.0.0": {
         "dependencies": {
           "Raylib-cs": "4.5.0.4"
         },
         "runtime": {
-          "TopDownGame.dll": {}
+          "TopDownGam.dll": {}
         }
       },
       "Raylib-cs/4.5.0.4": {
@@ -56,7 +56,7 @@
     }
   },
   "libraries": {
-    "TopDownGame/1.0.0": {
+    "TopDownGam/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

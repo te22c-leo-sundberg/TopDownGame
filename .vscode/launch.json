@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/TopDownGame/bin/Debug/net7.0/TopDownGame.dll",
+            "program": "${workspaceFolder}/TopDownGam/bin/Debug/net7.0/TopDownGam.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/TopDownGame",
+            "cwd": "${workspaceFolder}/TopDownGam",
             "console": "internalConsole",
             "stopAtEntry": false
         },
