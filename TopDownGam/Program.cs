@@ -2,13 +2,19 @@
 using System.Numerics;
 Random generator = new Random();
 
-Raylib.InitWindow(1600, 900, "(‿ˠ‿)");
+int GameX = 1600;
+int GameY = 900;
+
+Raylib.InitWindow(GameX, GameY, "(‿ˠ‿)");
 Raylib.SetTargetFPS(60);
 
 float speed = 5;
 
+int playerSizeX = 53;
+int playerSizeY = 66;
+
 Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
-Vector2 playerRect = new Vector2(53, 65);
+Vector2 playerRect = new Vector2(playerSizeX, playerSizeY);
 Vector2 movement = Vector2.Zero;
 
 while (!Raylib.WindowShouldClose())
@@ -48,18 +54,18 @@ while (!Raylib.WindowShouldClose())
     {
         playerRect.X = 0;
     }
-    else if (playerRect.X > 759)
+    else if (playerRect.X > GameX - playerSizeX)
     {
-        playerRect.X = 759;
+        playerRect.X = GameX - playerSizeX;
     }
 
     if (playerRect.Y < 0)
     {
         playerRect.Y = 0;
     }
-    else if (playerRect.Y > 750)
+    else if (playerRect.Y > GameY - playerSizeY)
     {
-        playerRect.Y = 750;
+        playerRect.Y = GameY - playerSizeY;
     }
 
     //if playerRect.X/.Y = wall.X/.Y speed = 0.
