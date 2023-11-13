@@ -21,3 +21,6 @@ C:\Users\leo.sundberg1\Desktop\Programming\TopDownGame\TopDownGam\obj\Debug\net7
 C:\Users\leo.sundberg1\Desktop\Programming\TopDownGame\TopDownGam\obj\Debug\net7.0\TopDownGam.genruntimeconfig.cache
 C:\Users\leo.sundberg1\Desktop\Programming\TopDownGame\TopDownGam\obj\Debug\net7.0\ref\TopDownGam.dll
 C:\Users\leo.sundberg1\Desktop\Programming\TopDownGame\TopDownGam\bin\Debug\net7.0\cryingchild.png
+C:\Users\leo.sundberg1\Desktop\Programming\TopDownGame\TopDownGam\bin\Debug\net7.0\cryingchild1.png
+C:\Users\leo.sundberg1\Desktop\Programming\TopDownGame\TopDownGam\bin\Debug\net7.0\cryingchild2.png
+C:\Users\leo.sundberg1\Desktop\Programming\TopDownGame\TopDownGam\bin\Debug\net7.0\cryingchild3.png
