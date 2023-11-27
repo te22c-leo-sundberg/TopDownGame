@@ -134,11 +134,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\TopDownGame\\TopDownGam\\TopDownGam.csproj",
+      "projectUniqueName": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Vinterprojekt\\TopDownGam\\TopDownGam.csproj",
       "projectName": "TopDownGam",
-      "projectPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\TopDownGame\\TopDownGam\\TopDownGam.csproj",
+      "projectPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Vinterprojekt\\TopDownGam\\TopDownGam.csproj",
       "packagesPath": "C:\\Users\\leo.sundberg1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\TopDownGame\\TopDownGam\\obj\\",
+      "outputPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Vinterprojekt\\TopDownGam\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

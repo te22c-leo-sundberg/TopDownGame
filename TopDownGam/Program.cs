@@ -2,23 +2,56 @@
 using System.Numerics;
 Random generator = new Random();
 
-int GameX = 1600;
-int GameY = 900;
+float GameX = 1600;
+float GameY = 900;
 
-Raylib.InitWindow(GameX, GameY, "(‿ˠ‿)");
+Raylib.InitWindow((int)GameX, (int)GameY, "(‿ˠ‿)");
 Raylib.SetTargetFPS(60);
 
 float speed = 5;
 
-int playerSizeX = 53;
-int playerSizeY = 66;
+float playerRectX = 0;
+float playerRectY = 0;
+
+float playerSizeX = 53;
+float playerSizeY = 66;
+
+int[,] sceneData = {
+{0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+};
 
 Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
 Vector2 playerRect = new Vector2(playerSizeX, playerSizeY);
 Vector2 movement = Vector2.Zero;
 
+int tileSize = 50;
+
 while (!Raylib.WindowShouldClose())
 {
+
+    Camera2D camera = { 0 };
+    camera.target = new Vector2(playerRectX - playerSizeX/2, playerRectY - playerSizeY);
+    camera.offset = new Vector2(GameX/2,GameY/2);
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 
     movement = Vector2.Zero;
 
@@ -47,33 +80,46 @@ while (!Raylib.WindowShouldClose())
 
     movement *= speed;
 
-    playerRect.X += movement.X;
-    playerRect.Y += movement.Y;
+    playerRectX += movement.X;
+    playerRectY += movement.Y;
 
-    if (playerRect.X < 0)
+    if (playerRectX < 0)
     {
-        playerRect.X = 0;
+        playerRectX = 0;
     }
-    else if (playerRect.X > GameX - playerSizeX)
+    else if (playerRectX > GameX - playerSizeX)
     {
-        playerRect.X = GameX - playerSizeX;
-    }
-
-    if (playerRect.Y < 0)
-    {
-        playerRect.Y = 0;
-    }
-    else if (playerRect.Y > GameY - playerSizeY)
-    {
-        playerRect.Y = GameY - playerSizeY;
+        playerRectX = GameX - playerSizeX;
     }
 
-    //if playerRect.X/.Y = wall.X/.Y speed = 0.
+    if (playerRectY < 0)
+    {
+        playerRectY = 0;
+    }
+    else if (playerRectY > GameY - playerSizeY)
+    {
+        playerRectY = GameY - playerSizeY;
+    }
+
+    //if playerRectX/Y = wall.X/.Y speed = 0.
 
     Raylib.BeginDrawing();
 
     Raylib.ClearBackground(Color.BLACK);
-    Raylib.DrawTexture(playerRectImage,(int)playerRect.X, (int)playerRect.Y, Color.WHITE);
+
+    for (int y = 0; y < sceneData.GetLength(0); y++)
+    {
+        for (int x = 0; x < sceneData.GetLength(1); x++)
+        {
+            if (sceneData[y, x] == 1)
+            {
+
+                Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+            }
+        }
+    }
+
+    Raylib.DrawTexture(playerRectImage, (int)playerRectX, (int)playerRectY, Color.WHITE);
 
     Raylib.EndDrawing();
 }
