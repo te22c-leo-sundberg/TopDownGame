@@ -2,6 +2,8 @@
 using System.Numerics;
 Random generator = new Random();
 
+int GameState = 0;
+
 float GameX = 1600;
 float GameY = 900;
 
@@ -15,6 +17,14 @@ float playerRectY = 0;
 
 float playerSizeX = 53;
 float playerSizeY = 66;
+
+int tileSize = 50;
+
+    Camera2D camera = new Camera2D();
+    camera.offset = new Vector2(GameX/2,GameY/2);
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+    camera.target = new Vector2(playerRectX + playerSizeX/2, playerRectY + playerSizeY/2);
 
 int[,] sceneData = {
 {0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -42,16 +52,42 @@ Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
 Vector2 playerRect = new Vector2(playerSizeX, playerSizeY);
 Vector2 movement = Vector2.Zero;
 
-int tileSize = 50;
+ MenuScreen();
+{
+    Console.WriteLine("Press [ENTER] to enter.");
+    if ( Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+    {
+        GameState = 1;
+    }
+}
+
+static extern void Labyrinth();
+{
+    
+    Raylib.ClearBackground(Color.BLACK);
+
+    for (int y = 0; y < sceneData.GetLength(0); y++)
+    {
+        for (int x = 0; x < sceneData.GetLength(1); x++)
+        {
+            if (sceneData[y, x] == 1)
+            {
+
+                Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+            }
+        }
+    }
+    camera.target = new Vector2(playerRectX + playerSizeX/2, playerRectY + playerSizeY/2);
+    Raylib.BeginMode2D(camera);
+    Raylib.DrawTexture(playerRectImage, (int)playerRectX, (int)playerRectY, Color.WHITE);
+    
+    Raylib.EndMode2D();
+}
+
+bool PlayerCamera = false;
 
 while (!Raylib.WindowShouldClose())
 {
-
-    Camera2D camera = { 0 };
-    camera.target = new Vector2(playerRectX - playerSizeX/2, playerRectY - playerSizeY);
-    camera.offset = new Vector2(GameX/2,GameY/2);
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
 
     movement = Vector2.Zero;
 
@@ -105,21 +141,14 @@ while (!Raylib.WindowShouldClose())
 
     Raylib.BeginDrawing();
 
-    Raylib.ClearBackground(Color.BLACK);
-
-    for (int y = 0; y < sceneData.GetLength(0); y++)
+    if (GameState == 0)
     {
-        for (int x = 0; x < sceneData.GetLength(1); x++)
-        {
-            if (sceneData[y, x] == 1)
-            {
-
-                Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
-            }
-        }
+        MenuScreen();
     }
-
-    Raylib.DrawTexture(playerRectImage, (int)playerRectX, (int)playerRectY, Color.WHITE);
+    else if (GameState == 1)
+    {
+        Labyrinth();
+    }
 
     Raylib.EndDrawing();
 }
