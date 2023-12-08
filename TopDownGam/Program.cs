@@ -128,23 +128,15 @@ while (!Raylib.WindowShouldClose())
         playerRectX += movement.X;
         playerRectY += movement.Y;
 
-        // if (playerRectX < 0)
-        // {
-        //     playerRectX = 0;
-        // }
-        // else if (playerRectX > GameX - playerSizeX)
-        // {
-        //     playerRectX = GameX - playerSizeX;
-        // }
+        if (CheckWallCollision(playerRect, walls))
+        {
+            movement.X -= movement.X;
+        }
 
-        // if (playerRectY < 0)
-        // {
-        //     playerRectY = 0;
-        // }
-        // else if (playerRectY > GameY - playerSizeY)
-        // {
-        //     playerRectY = GameY - playerSizeY;
-        // }
+        if (CheckWallCollision(playerRect, walls))
+        {
+            movement.Y -= movement.Y;
+        }
 
         Raylib.ClearBackground(Color.BLACK);
 
@@ -164,27 +156,23 @@ while (!Raylib.WindowShouldClose())
                 }
             }
             Raylib.DrawTexture(playerRectImage, (int)playerRectX, (int)playerRectY, Color.WHITE);
-            
-            bool collidedwithsomething = false;
 
-
-            foreach (Rectangle r in walls)
-            {
-                if (Raylib.CheckCollisionRecs(playerRect,r))
-                {
-                    playerRect.x -= movement.X;
-                    collidedwithsomething = true;
-                }
-            }
-
-            if (collidedwithsomething)
-            {
-                playerRect.x -= movement.X;
-            }
-                
             Raylib.EndMode2D();
         }
     }
 
     Raylib.EndDrawing();
+}
+
+static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
+{
+    foreach (Rectangle r in walls)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, r))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
