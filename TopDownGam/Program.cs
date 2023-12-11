@@ -16,19 +16,17 @@ bool CameraReal = false;
 
 float speed = 5;
 
-float playerRectX = 0;
-float playerRectY = 0;
-
 float playerSizeX = 53;
 float playerSizeY = 66;
 
 int tileSize = 50;
 
+Rectangle playerRect = new Rectangle( 0, 0, playerSizeY, playerSizeX);
+
 Camera2D camera = new Camera2D();
 camera.offset = new Vector2(GameX / 2, GameY / 2);
 camera.rotation = 0.0f;
 camera.zoom = 1.0f;
-camera.target = new Vector2(playerRectX + playerSizeX / 2, playerRectY + playerSizeY / 2);
 
 int[,] sceneData = {
 {0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -51,8 +49,6 @@ int[,] sceneData = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 };
-
-Rectangle playerRect = new Rectangle(playerRectX, playerRectY, playerSizeY, playerSizeX);
 
 List<Rectangle> walls = new();
 {
@@ -98,6 +94,8 @@ while (!Raylib.WindowShouldClose())
     if (GameState == "Labyrinth")
     {
 
+        camera.target = new Vector2(playerRect.x + playerSizeX / 2, playerRect.x + playerSizeY / 2);
+
         movement = Vector2.Zero;
 
         if (Raylib.IsKeyDown(KeyboardKey.KEY_S) || Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
@@ -125,24 +123,25 @@ while (!Raylib.WindowShouldClose())
 
         movement *= speed;
 
-        playerRectX += movement.X;
-        playerRectY += movement.Y;
+        playerRect.x += movement.X;
 
         if (CheckWallCollision(playerRect, walls))
         {
-            movement.X -= movement.X;
+            playerRect.x -= movement.X;
         }
 
+        playerRect.y += movement.Y;
+
         if (CheckWallCollision(playerRect, walls))
         {
-            movement.Y -= movement.Y;
+            playerRect.y -= movement.Y;
         }
 
         Raylib.ClearBackground(Color.BLACK);
 
         if (CameraReal == true)
         {
-            camera.target = new Vector2(playerRectX + playerSizeX / 2, playerRectY + playerSizeY / 2);
+            camera.target = new Vector2(playerRect.x + playerSizeX / 2, playerRect.y + playerSizeY / 2);
             Raylib.BeginMode2D(camera);
             for (int y = 0; y < sceneData.GetLength(0); y++)
             {
@@ -155,7 +154,7 @@ while (!Raylib.WindowShouldClose())
                     }
                 }
             }
-            Raylib.DrawTexture(playerRectImage, (int)playerRectX, (int)playerRectY, Color.WHITE);
+            Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
 
             Raylib.EndMode2D();
         }
