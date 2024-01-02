@@ -69,8 +69,8 @@ List<Rectangle> walls = new();
     }
 }
 
-
-
+Texture2D enemyImage = Raylib.LoadTexture("enemy.png");
+Texture2D collectibleImage = Raylib.LoadTexture("star.png");
 Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
 Vector2 movement = Vector2.Zero;
 
@@ -151,6 +151,14 @@ while (!Raylib.WindowShouldClose())
                     if (sceneData[y, x] == 1)
                     {
                         Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+                    }
+                    if (sceneData[y, x] == 2)
+                    {
+                        Raylib.DrawTexture(enemyImage, x * tileSize, y * tileSize, Color.WHITE);
+                    }
+                    if (sceneData[y, x] == 3)
+                    {
+                        Raylib.DrawTexture(collectibleImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
                 }
             }
