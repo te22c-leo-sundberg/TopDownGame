@@ -14,6 +14,8 @@ Raylib.SetTargetFPS(60);
 
 bool CameraReal = false;
 
+int points = 0;
+
 float speed = 5;
 
 float playerSizeX = 66;
@@ -69,6 +71,44 @@ List<Rectangle> walls = new();
     }
 }
 
+List<Rectangle> enemies = new();
+{
+
+    for (int y = 0; y < sceneData.GetLength(0); y++)
+    {
+        for (int x = 0; x < sceneData.GetLength(2); x++)
+        {
+            if (sceneData[y, x] == 2)
+            {
+                // Skapa en rektangel
+                Rectangle e = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
+                enemies.Add(e);
+                // Lägg till den i listan
+                // Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+            }
+        }
+    }
+}
+
+List<Rectangle> collectibles = new();
+{
+
+    for (int y = 0; y < sceneData.GetLength(0); y++)
+    {
+        for (int x = 0; x < sceneData.GetLength(3); x++)
+        {
+            if (sceneData[y, x] == 3)
+            {
+                // Skapa en rektangel
+                Rectangle c = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
+                collectibles.Add(c);
+                // Lägg till den i listan
+                // Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+            }
+        }
+    }
+}
+
 Texture2D enemyImage = Raylib.LoadTexture("enemy.png");
 Texture2D collectibleImage = Raylib.LoadTexture("star.png");
 Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
@@ -93,6 +133,7 @@ while (!Raylib.WindowShouldClose())
 
     if (GameState == "Labyrinth")
     {
+        Raylib.DrawText(($"Points: {points}"), 600, 80, 20, Color.YELLOW);
 
         camera.target = new Vector2(playerRect.x + playerSizeX / 2, playerRect.x + playerSizeY / 2);
 
@@ -137,6 +178,14 @@ while (!Raylib.WindowShouldClose())
             playerRect.y -= movement.Y;
         }
 
+        if (CheckCollectibleCollision(playerRect, collectibles))
+        {
+            points += 1;
+        }
+
+        if (CheckEnemyCollision(playerRect, enemies))
+
+
         Raylib.ClearBackground(Color.BLACK);
 
         if (CameraReal == true)
@@ -176,6 +225,32 @@ static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
     foreach (Rectangle r in walls)
     {
         if (Raylib.CheckCollisionRecs(playerRect, r))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static bool CheckEnemyCollision(Rectangle playerRect, List<Rectangle> enemies)
+{
+    foreach (Rectangle e in enemies)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, e))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static bool CheckCollectibleCollision(Rectangle playerRect, List<Rectangle> collectibles)
+{
+    foreach (Rectangle c in collectibles)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, c))
         {
             return true;
         }
