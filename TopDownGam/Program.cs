@@ -76,7 +76,7 @@ List<Rectangle> enemies = new();
 
     for (int y = 0; y < sceneData.GetLength(0); y++)
     {
-        for (int x = 0; x < sceneData.GetLength(2); x++)
+        for (int x = 0; x < sceneData.GetLength(1); x++)
         {
             if (sceneData[y, x] == 2)
             {
@@ -95,7 +95,7 @@ List<Rectangle> collectibles = new();
 
     for (int y = 0; y < sceneData.GetLength(0); y++)
     {
-        for (int x = 0; x < sceneData.GetLength(3); x++)
+        for (int x = 0; x < sceneData.GetLength(1); x++)
         {
             if (sceneData[y, x] == 3)
             {
