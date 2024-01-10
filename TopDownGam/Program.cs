@@ -130,10 +130,7 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("Press [ENTER] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-            if (Raylib.IsKey(KeyboardKey.KEY_SPACE))
-            {
                 GameState = "NamePick";
-            }
         }
     }
 
