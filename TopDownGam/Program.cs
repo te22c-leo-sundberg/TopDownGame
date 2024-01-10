@@ -13,8 +13,10 @@ string GameState = "Menu";
 float GameX = 900;
 float GameY = 900;
 
+int framerate = 60;
+
 Raylib.InitWindow((int)GameX, (int)GameY, "(‿ˠ‿)");
-Raylib.SetTargetFPS(60);
+Raylib.SetTargetFPS(framerate);
 
 bool CameraReal = false;
 
@@ -126,9 +128,12 @@ while (!Raylib.WindowShouldClose())
     if (GameState == "Menu")
     {
         Raylib.DrawText("Press [ENTER] to enter.", 200, 80, 20, Color.RED);
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-            GameState = "NamePick";
+            if (Raylib.IsKey(KeyboardKey.KEY_SPACE))
+            {
+                GameState = "NamePick";
+            }
         }
     }
 
