@@ -141,10 +141,8 @@ while (!Raylib.WindowShouldClose())
         {
             waittime --;
         }
-        else
-        {
         Raylib.DrawText("What is your name, brave soul? [Space]", 50, 200, 20, Color.RED);
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
             Raylib.DrawText("You don't... want one? [Space]", 50, 200, 20, Color.RED);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
@@ -156,7 +154,6 @@ while (!Raylib.WindowShouldClose())
                     CameraReal = true;
                 }
             }
-        }
         }
     }
 
