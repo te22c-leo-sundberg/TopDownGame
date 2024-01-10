@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography.X509Certificates;
 
 Random generator = new Random();
 
@@ -35,7 +36,7 @@ camera.zoom = 1.0f;
 
 int[,] sceneData = {
 {1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
+{1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
 {1,0,0,1,1,1,1,1,1,1,0,0,0,0,2,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,1,1},
 {1,0,1,1,0,0,2,1,0,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
 {1,0,1,3,0,1,0,0,0,1,0,0,1,3,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,2,0,1},
@@ -120,8 +121,6 @@ Vector2 movement = Vector2.Zero;
 while (!Raylib.WindowShouldClose())
 {
 
-    //if playerRectX/Y = wall.X/.Y speed = 0.
-
     Raylib.BeginDrawing();
 
     if (GameState == "Menu")
@@ -197,9 +196,11 @@ while (!Raylib.WindowShouldClose())
             playerRect.y -= movement.Y;
         }
 
-        if (CheckCollectibleCollision(playerRect, collectibles))
+        Rectangle collectibleRect = CheckCollectibleCollision(playerRect, collectibles); //checkar collisions och skapar rektangel ifall collision true
+        if (collectibleRect.width != 0)
         {
             points += 3;
+            collectibles.Remove(collectibleRect);
         }
 
         Raylib.ClearBackground(Color.BLACK);
@@ -258,9 +259,9 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawText(($"Foe health:{enemyhp}"), 100, 800, 25, Color.RED);
             Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 100, 100, 25, Color.RED);
             Raylib.DrawText(("What is your decison?"), 100, 140, 25, Color.RED);
-            Raylib.DrawText(("[S]lash or [P]uncture"), 100, 180, 25, Color.RED);
+            Raylib.DrawText(("[C]arve or [P]uncture"), 100, 180, 25, Color.RED);
 
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_S))
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
             {
                 accuracy = generator.Next(1,10);
                 if (accuracy <2)
@@ -272,23 +273,31 @@ while (!Raylib.WindowShouldClose())
                     int playerdamage = generator.Next(3,15);
                     enemyhp -= playerdamage;
                     enemyhp = Math.Max(0, enemyhp);
-                    Raylib.DrawText(("You swing your sword confidently, damaging the foe for {playerdamage}."), 100, 100, 25, Color.RED);
+                    Raylib.DrawText(($"You swing your sword confidently, damaging the foe for {playerdamage} damage."), 100, 100, 25, Color.RED);
                 }
             }
             else if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
             {
                 if (accuracy < 5)
                 {
-
-                }
-                else
-                {
                 int playerdamage = generator.Next(7,20);
                 enemyhp -= playerdamage;
                 enemyhp = Math.Max(0, enemyhp);
-                Raylib.DrawText(("You swing your sword confidently, damaging the foe for {playerdamage}."), 100, 100, 25, Color.RED);
+                Raylib.DrawText(($"You thrust your sword, aiming for the foes weak point, your sword connects and deals {playerdamage} damage."), 100, 100, 25, Color.RED);
+                }
+                else
+                {   
+                    playerhp -= 5;
+                    playerhp = Math.Max(0, playerhp);
+                    Raylib.DrawText(("You thrust your sword, aiming for the foes weak point, but lose your grip and take 5 damage"), 100, 100, 25, Color.RED);
                 }
             }
+            int enemydamage = generator.Next(2,13);
+            playerhp -= enemydamage;
+            playerhp = Math.Max(0, playerhp);
+            Raylib.DrawText(($"The foe charges at you, dealing {enemydamage} damage before hastly retreating"), 100, 100, 25, Color.RED);
+
+           
         }
         else
         {
@@ -298,6 +307,7 @@ while (!Raylib.WindowShouldClose())
 
 
     }
+    
 
     Raylib.EndDrawing();
 }
@@ -328,15 +338,15 @@ static bool CheckEnemyCollision(Rectangle playerRect, List<Rectangle> enemies)
     return false;
 }
 
-static bool CheckCollectibleCollision(Rectangle playerRect, List<Rectangle> collectibles)
+static Rectangle CheckCollectibleCollision(Rectangle playerRect, List<Rectangle> collectibles) //returnera rektangel
 {
     foreach (Rectangle c in collectibles)
     {
         if (Raylib.CheckCollisionRecs(playerRect, c))
         {
-            return true;
+            return c;
         }
     }
 
-    return false;
+    return new Rectangle();
 }
