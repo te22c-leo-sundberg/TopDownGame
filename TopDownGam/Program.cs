@@ -137,24 +137,34 @@ while (!Raylib.WindowShouldClose())
     if (GameState == "NamePick")
     {
         int waittime = framerate * 2;
+        Raylib.DrawText("What is your name, brave soul? [Space]", 50, 200, 20, Color.RED);
         if  (waittime > 0)
         {
             waittime --;
         }
-        Raylib.DrawText("What is your name, brave soul? [Space]", 50, 200, 20, Color.RED);
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-            Raylib.DrawText("You don't... want one? [Space]", 50, 200, 20, Color.RED);
+        waittime = framerate * 2;
+        Raylib.DrawText("You don't... want one? [Space]", 50, 200, 20, Color.RED);
+        if  (waittime > 0)
+        {
+            waittime --;
+        }
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        {
+        waittime = framerate * 2;
+            Raylib.DrawText(("I hope you won't regret your decision. [Space]"), 50, 200, 20, Color.RED);
+            if  (waittime > 0)
+            {
+                waittime --;
+            }
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
-                Raylib.DrawText(("I hope you won't regret your decision. [Space]"), 50, 200, 20, Color.RED);
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                {
-                    GameState = "Labyrinth";
-                    CameraReal = true;
-                }
+                GameState = "Labyrinth";
+                CameraReal = true;
             }
         }
+    }
     }
 
     if (GameState == "Labyrinth")
