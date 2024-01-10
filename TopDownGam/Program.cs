@@ -15,6 +15,8 @@ float GameY = 900;
 
 int framerate = 60;
 
+string BattleState = "Menu";
+
 int waittime = framerate * 2;
 
 Raylib.InitWindow((int)GameX, (int)GameY, "(‿ˠ‿)");
@@ -263,6 +265,7 @@ if (GameState == "NamePick")
         Rectangle enemiesRect = CheckEnemyCollision(playerRect, enemies); //checkar collisions och skapar rektangel ifall collision true
         if (enemiesRect.width != 0)
         {
+            GameState = "Battle";
             enemies.Remove(enemiesRect);
             for (int y = 0; y < sceneData.GetLength(0); y++)
             {
@@ -285,40 +288,103 @@ if (GameState == "NamePick")
         }
     }
 
-    if (GameState == "Battle")
+if (GameState == "Battle")
+{
+
+    
+
+    var random = new Random();
+
+
+    Raylib.ClearBackground(Color.BLACK);
+
+    if (playerhp > 0 && enemyhp > 0)
     {
+    Raylib.DrawText(($"Your health:{playerhp}"), 50, 760, 25, Color.RED);
+    Raylib.DrawText(($"Foe health:{enemyhp}"), 50, 800, 25, Color.RED);
 
-        string BattleState = "Menu";
+    if (BattleState == "Menu")
+    {
+        Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 50, 100, 25, Color.RED);
+        Raylib.DrawText(("What is your decison?"), 50, 140, 25, Color.RED);
+        Raylib.DrawText(("[C]arve or [P]uncture"), 50, 180, 25, Color.RED);
 
-        var random = new Random();
-
-
-        Raylib.ClearBackground(Color.BLACK);
-
-        if (playerhp > 0 && enemyhp > 0)
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
         {
-            if (BattleState == "Menu")
+            BattleState = "CAttack";
+        }
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+        {
+            BattleState = "PAttack";
+        }
+        
+        if (BattleState == "CAttack")
+        {
+            accuracy = generator.Next(1,10);
+            if (accuracy > 2)
             {
-                Raylib.DrawText(($"Your health:{playerhp}"), 100, 760, 25, Color.RED);
-                Raylib.DrawText(($"Foe health:{enemyhp}"), 100, 800, 25, Color.RED);
-                Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 100, 100, 25, Color.RED);
-                Raylib.DrawText(("What is your decison?"), 100, 140, 25, Color.RED);
-                Raylib.DrawText(("[C]arve or [P]uncture"), 100, 180, 25, Color.RED);
-                BattleState = "Attack";
-            }
-            if (BattleState == "CAttack")
-            {
+                int playerdamage = generator.Next(3,15);
+                enemyhp -= playerdamage;
+                enemyhp = Math.Max(0, enemyhp);
+                Raylib.DrawText(($"You swing your sword confidently, dealing {playerdamage} damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
 
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                {
+                    BattleState = "EnemyAttack";
+                }
+            }
+            else
+            {
+                Raylib.DrawText(($"You swing your sword, but your confidence was lacking and you missed./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
+
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                {
+                    BattleState = "EnemyAttack";
+                }
             }
         }
-        else
-        {
-            points += 1;
-            playerhp = 100;
-            BattleState = "Menu";
-            GameState = "Labyrinth";
-        }
+            else if (BattleState == "PAttack")
+            {
+                accuracy = generator.Next(1,10); //try to use waiting time and if space is pressed waiting time = 0, or make generator run only once so you dont deal multiple instances of damage instantly cuz thats bad
+                if (accuracy > 5)
+                {
+                    int playerdamage = generator.Next(5,22);
+                    enemyhp -= playerdamage;
+                    enemyhp = Math.Max(0, enemyhp);
+                    Raylib.DrawText(($"You thrust your sword into the foe with confidence,/nhitting the foe in the heart, dealing {playerdamage} damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
+
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "EnemyAttack";
+                    }
+                }
+                else
+                {
+                    playerhp -= 5;
+                    playerhp = Math.Max(0, playerhp);
+                    Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it on your toe,/ndealing 5 damage to yourself./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
+
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "EnemyAttack";
+                    }
+                }
+            }
+            if (BattleState == "EnemyAttack")
+            {
+                
+            }
     }
+    else
+    {
+        points += 1;
+        playerhp = 100;
+        enemyhp = 50;
+        BattleState = "Menu";
+        GameState = "Labyrinth";
+    }
+    }
+}
     
 
     Raylib.EndDrawing();
