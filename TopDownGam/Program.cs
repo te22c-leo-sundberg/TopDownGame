@@ -127,15 +127,22 @@ while (!Raylib.WindowShouldClose())
 
     if (GameState == "Menu")
     {
-        Raylib.DrawText("Press [ENTER] to enter.", 200, 80, 20, Color.RED);
+        Raylib.DrawText("Press [SPACE] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
                 GameState = "NamePick";
-        }
+        } 
     }
 
     if (GameState == "NamePick")
     {
+        int waittime = framerate * 2;
+        if  (waittime > 0)
+        {
+            waittime --;
+        }
+        else
+        {
         Raylib.DrawText("What is your name, brave soul? [Space]", 50, 200, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
@@ -149,6 +156,7 @@ while (!Raylib.WindowShouldClose())
                     CameraReal = true;
                 }
             }
+        }
         }
     }
 
