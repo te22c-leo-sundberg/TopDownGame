@@ -28,6 +28,10 @@ int points = 0;
 
 float speed = 5;
 
+int playerhp = 100;
+int enemyhp = 50;
+int accuracy;
+
 float playerSizeX = 66;
 float playerSizeY = 53;
 
@@ -42,7 +46,7 @@ camera.zoom = 1.0f;
 
 int[,] sceneData = {
 {1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
+{1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
 {1,0,0,1,1,1,1,1,1,1,0,0,0,0,2,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,1,1},
 {1,0,1,1,0,0,2,1,0,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
 {1,0,1,3,0,1,0,0,0,1,0,0,1,3,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,2,0,1},
@@ -256,9 +260,20 @@ if (GameState == "NamePick")
 
        
         
-        if (CheckEnemyCollision(playerRect, enemies))
+        Rectangle enemiesRect = CheckEnemyCollision(playerRect, enemies); //checkar collisions och skapar rektangel ifall collision true
+        if (enemiesRect.width != 0)
         {
-            GameState = "Battle";
+            enemies.Remove(enemiesRect);
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] == 2)
+                    {
+                    sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] = 0;
+                    } 
+                }
+            }
         }
 
             Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
@@ -272,9 +287,8 @@ if (GameState == "NamePick")
 
     if (GameState == "Battle")
     {
-        int playerhp = 100;
-        int enemyhp = 50;
-        int accuracy = 0;
+
+        string BattleState = "Menu";
 
         var random = new Random();
 
@@ -283,56 +297,25 @@ if (GameState == "NamePick")
 
         if (playerhp > 0 && enemyhp > 0)
         {
-            Raylib.DrawText(($"Your health:{playerhp}"), 100, 760, 25, Color.RED);
-            Raylib.DrawText(($"Foe health:{enemyhp}"), 100, 800, 25, Color.RED);
-            Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 100, 100, 25, Color.RED);
-            Raylib.DrawText(("What is your decison?"), 100, 140, 25, Color.RED);
-            Raylib.DrawText(("[C]arve or [P]uncture"), 100, 180, 25, Color.RED);
-
-            if(Raylib.IsKeyPressed(KeyboardKey.KEY_C))
+            if (BattleState == "Menu")
             {
-                Raylib.ClearBackground(Color.BLACK);
-                accuracy = generator.Next(1,10);
-                if (accuracy <2)
-                {
-                    Raylib.DrawText(("You swing your sword but miss miserably."), 100, 100, 25, Color.RED);
-                }
-                else
-                {
-                    int playerdamage = generator.Next(3,15);
-                    enemyhp -= playerdamage;
-                    enemyhp = Math.Max(0, enemyhp);
-                    Raylib.DrawText(($"You swing your sword confidently, damaging the foe for {playerdamage} damage."), 100, 100, 25, Color.RED);
-                }
+                Raylib.DrawText(($"Your health:{playerhp}"), 100, 760, 25, Color.RED);
+                Raylib.DrawText(($"Foe health:{enemyhp}"), 100, 800, 25, Color.RED);
+                Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 100, 100, 25, Color.RED);
+                Raylib.DrawText(("What is your decison?"), 100, 140, 25, Color.RED);
+                Raylib.DrawText(("[C]arve or [P]uncture"), 100, 180, 25, Color.RED);
+                BattleState = "Attack";
             }
-            else if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+            if (BattleState == "CAttack")
             {
-                Raylib.ClearBackground(Color.BLACK);
-                accuracy = generator.Next(1,10);
-                if (accuracy < 5)
-                {
-                int playerdamage = generator.Next(7,20);
-                enemyhp -= playerdamage;
-                enemyhp = Math.Max(0, enemyhp);
-                Raylib.DrawText(($"You thrust your sword, aiming for the foes weak point, your sword connects and deals {playerdamage} damage."), 100, 100, 25, Color.RED);
-                }
-                else
-                {   
-                    playerhp -= 5;
-                    playerhp = Math.Max(0, playerhp);
-                    Raylib.DrawText(("You thrust your sword, aiming for the foes weak point, but lose your grip and take 5 damage"), 100, 100, 25, Color.RED);
-                }
-            }
-            int enemydamage = generator.Next(2,13);
-            playerhp -= enemydamage;
-            playerhp = Math.Max(0, playerhp);
-            Raylib.DrawText(($"The foe charges at you, dealing {enemydamage} damage before hastly retreating"), 100, 100, 25, Color.RED);
 
+            }
         }
         else
         {
             points += 1;
             playerhp = 100;
+            BattleState = "Menu";
             GameState = "Labyrinth";
         }
     }
@@ -354,17 +337,17 @@ static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
     return false;
 }
 
-static bool CheckEnemyCollision(Rectangle playerRect, List<Rectangle> enemies)
+static Rectangle CheckEnemyCollision(Rectangle playerRect, List<Rectangle> enemies)
 {
     foreach (Rectangle e in enemies)
     {
         if (Raylib.CheckCollisionRecs(playerRect, e))
         {
-            return true;
+            return e;
         }
     }
 
-    return false;
+    return new Rectangle();
 }
 
 static Rectangle CheckCollectibleCollision(Rectangle playerRect, List<Rectangle> collectibles) //returnera rektangel
