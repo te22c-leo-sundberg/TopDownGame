@@ -125,7 +125,7 @@ while (!Raylib.WindowShouldClose())
 
     if (GameState == "Menu")
     {
-        Raylib.DrawText(("Press [ENTER] to enter."), 200, 80, 20, Color.RED);
+        Raylib.DrawText("Press [ENTER] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
         {
             GameState = "NamePick";
@@ -134,14 +134,14 @@ while (!Raylib.WindowShouldClose())
 
     if (GameState == "NamePick")
     {
-        Raylib.DrawText(("What is your name, brave soul?"), 200, 200, 200, Color.RED);
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+        Raylib.DrawText("What is your name, brave soul? [Space]", 50, 200, 20, Color.RED);
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-            Raylib.DrawText(("You don't... want one?"), 200, 200, 200, Color.RED);
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+            Raylib.DrawText("You don't... want one? [Space]", 50, 200, 20, Color.RED);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
-                Raylib.DrawText(("I hope you won't regret your decision."), 200, 200, 200, Color.RED);
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+                Raylib.DrawText(("I hope you won't regret your decision. [Space]"), 50, 200, 20, Color.RED);
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
                 {
                     GameState = "Labyrinth";
                     CameraReal = true;
@@ -201,6 +201,16 @@ while (!Raylib.WindowShouldClose())
         {
             points += 3;
             collectibles.Remove(collectibleRect);
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] == 3)
+                    {
+                    sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] = 0;
+                    } 
+                }
+            }
         }
 
         Raylib.ClearBackground(Color.BLACK);
@@ -229,6 +239,8 @@ while (!Raylib.WindowShouldClose())
                 }
             }
 
+       
+        
         if (CheckEnemyCollision(playerRect, enemies))
         {
             GameState = "Battle";
@@ -245,65 +257,69 @@ while (!Raylib.WindowShouldClose())
 
     if (GameState == "Battle")
     {
-        int playerhp = 100;
-        int enemyhp = 50;
-        int accuracy = 0;
+        Raylib.EndDrawing();
+        // int playerhp = 100;
+        // int enemyhp = 50;
+        // int accuracy = 0;
 
         var random = new Random();
 
-        Raylib.ClearBackground(Color.BLACK);
 
-        if (playerhp > 0 && enemyhp > 0)
-        {
-            Raylib.DrawText(($"Your health:{playerhp}"), 100, 760, 25, Color.RED);
-            Raylib.DrawText(($"Foe health:{enemyhp}"), 100, 800, 25, Color.RED);
-            Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 100, 100, 25, Color.RED);
-            Raylib.DrawText(("What is your decison?"), 100, 140, 25, Color.RED);
-            Raylib.DrawText(("[C]arve or [P]uncture"), 100, 180, 25, Color.RED);
+        // Raylib.ClearBackground(Color.BLACK);
 
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
-            {
-                accuracy = generator.Next(1,10);
-                if (accuracy <2)
-                {
-                    Raylib.DrawText(("You swing your sword but miss miserably."), 100, 100, 25, Color.RED);
-                }
-                else
-                {
-                    int playerdamage = generator.Next(3,15);
-                    enemyhp -= playerdamage;
-                    enemyhp = Math.Max(0, enemyhp);
-                    Raylib.DrawText(($"You swing your sword confidently, damaging the foe for {playerdamage} damage."), 100, 100, 25, Color.RED);
-                }
-            }
-            else if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
-            {
-                if (accuracy < 5)
-                {
-                int playerdamage = generator.Next(7,20);
-                enemyhp -= playerdamage;
-                enemyhp = Math.Max(0, enemyhp);
-                Raylib.DrawText(($"You thrust your sword, aiming for the foes weak point, your sword connects and deals {playerdamage} damage."), 100, 100, 25, Color.RED);
-                }
-                else
-                {   
-                    playerhp -= 5;
-                    playerhp = Math.Max(0, playerhp);
-                    Raylib.DrawText(("You thrust your sword, aiming for the foes weak point, but lose your grip and take 5 damage"), 100, 100, 25, Color.RED);
-                }
-            }
-            int enemydamage = generator.Next(2,13);
-            playerhp -= enemydamage;
-            playerhp = Math.Max(0, playerhp);
-            Raylib.DrawText(($"The foe charges at you, dealing {enemydamage} damage before hastly retreating"), 100, 100, 25, Color.RED);
+        // if (playerhp > 0 && enemyhp > 0)
+        // {
+        //     Raylib.DrawText(($"Your health:{playerhp}"), 100, 760, 25, Color.RED);
+        //     Raylib.DrawText(($"Foe health:{enemyhp}"), 100, 800, 25, Color.RED);
+        //     Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 100, 100, 25, Color.RED);
+        //     Raylib.DrawText(("What is your decison?"), 100, 140, 25, Color.RED);
+        //     Raylib.DrawText(("[C]arve or [P]uncture"), 100, 180, 25, Color.RED);
 
-           
-        }
-        else
-        {
-            points += 1;
-            GameState = "Labyrinth";
-        }
+        //     if(Raylib.IsKeyPressed(KeyboardKey.KEY_C))
+        //     {
+        //         Raylib.ClearBackground(Color.BLACK);
+        //         accuracy = generator.Next(1,10);
+        //         if (accuracy <2)
+        //         {
+        //             Raylib.DrawText(("You swing your sword but miss miserably."), 100, 100, 25, Color.RED);
+        //         }
+        //         else
+        //         {
+        //             int playerdamage = generator.Next(3,15);
+        //             enemyhp -= playerdamage;
+        //             enemyhp = Math.Max(0, enemyhp);
+        //             Raylib.DrawText(($"You swing your sword confidently, damaging the foe for {playerdamage} damage."), 100, 100, 25, Color.RED);
+        //         }
+        //     }
+        //     else if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+        //     {
+        //         Raylib.ClearBackground(Color.BLACK);
+        //         accuracy = generator.Next(1,10);
+        //         if (accuracy < 5)
+        //         {
+        //         int playerdamage = generator.Next(7,20);
+        //         enemyhp -= playerdamage;
+        //         enemyhp = Math.Max(0, enemyhp);
+        //         Raylib.DrawText(($"You thrust your sword, aiming for the foes weak point, your sword connects and deals {playerdamage} damage."), 100, 100, 25, Color.RED);
+        //         }
+        //         else
+        //         {   
+        //             playerhp -= 5;
+        //             playerhp = Math.Max(0, playerhp);
+        //             Raylib.DrawText(("You thrust your sword, aiming for the foes weak point, but lose your grip and take 5 damage"), 100, 100, 25, Color.RED);
+        //         }
+        //     }
+        //     int enemydamage = generator.Next(2,13);
+        //     playerhp -= enemydamage;
+        //     playerhp = Math.Max(0, playerhp);
+        //     Raylib.DrawText(($"The foe charges at you, dealing {enemydamage} damage before hastly retreating"), 100, 100, 25, Color.RED);
+
+        // }
+        // else
+        // {
+        //     points += 1;
+        //     GameState = "Labyrinth";
+        // }
 
 
     }
