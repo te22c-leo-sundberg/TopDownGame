@@ -262,7 +262,7 @@ while (!Raylib.WindowShouldClose())
         // int enemyhp = 50;
         // int accuracy = 0;
 
-        var random = new Random();
+        // var random = new Random();
 
 
         // Raylib.ClearBackground(Color.BLACK);
