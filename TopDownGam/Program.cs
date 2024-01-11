@@ -15,6 +15,8 @@ float GameY = 900;
 
 int framerate = 60;
 
+string AttackType = "";
+
 string BattleState = "Menu";
 
 int waittime = framerate * 2;
@@ -33,6 +35,8 @@ float speed = 5;
 int playerhp = 100;
 int enemyhp = 50;
 int accuracy;
+int playerdamage;
+int enemydamage;
 
 float playerSizeX = 66;
 float playerSizeY = 53;
@@ -323,24 +327,16 @@ if (GameState == "Battle")
             accuracy = generator.Next(1,10);
             if (accuracy > 2)
             {
-                int playerdamage = generator.Next(3,15);
+                playerdamage = generator.Next(3,15);
                 enemyhp -= playerdamage;
-                enemyhp = Math.Max(0, enemyhp);
-                Raylib.DrawText(($"You swing your sword confidently, dealing {playerdamage} damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
-
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                {
-                    BattleState = "EnemyAttack";
-                }
+                // enemyhp = Math.Max(0, enemyhp);
+                BattleState = "EnemyAttack";
+                AttackType = "CAttackHit";
             }
             else
             {
-                Raylib.DrawText(($"You swing your sword, but your confidence was lacking and you missed./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
-
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                {
-                    BattleState = "EnemyAttack";
-                }
+                BattleState = "EnemyAttack";
+                AttackType = "CAttackMiss";
             }
         }
             else if (BattleState == "PAttack")
@@ -348,31 +344,61 @@ if (GameState == "Battle")
                 accuracy = generator.Next(1,10); //try to use waiting time and if space is pressed waiting time = 0, or make generator run only once so you dont deal multiple instances of damage instantly cuz thats bad
                 if (accuracy > 5)
                 {
-                    int playerdamage = generator.Next(5,22);
+                    playerdamage = generator.Next(5,22);
                     enemyhp -= playerdamage;
-                    enemyhp = Math.Max(0, enemyhp);
-                    Raylib.DrawText(($"You thrust your sword into the foe with confidence,/nhitting the foe in the heart, dealing {playerdamage} damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
-
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "EnemyAttack";
-                    }
+                    // enemyhp = Math.Max(0, enemyhp);
+                    BattleState = "EnemyAttack";
+                    AttackType = "PAttackHit";
                 }
                 else
                 {
                     playerhp -= 5;
-                    playerhp = Math.Max(0, playerhp);
-                    Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it on your toe,/ndealing 5 damage to yourself./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
-
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "EnemyAttack";
-                    }
+                    // playerhp = Math.Max(0, playerhp);
+                    BattleState = "EnemyAttack";
+                    AttackType = "PAttackMiss";
                 }
             }
             if (BattleState == "EnemyAttack")
             {
-                
+                enemydamage = generator.Next(2,13);
+                playerhp -= enemydamage;
+                // playerhp = Math.Max(0, playerhp);
+                BattleState = "RoundSummary";
+            }
+            if (BattleState == "RoundSummary")
+            {
+                if (AttackType == "PAttackMiss")
+                {
+                    Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it on your toe,/ndealing 5 damage to yourself./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                    }
+                }
+                else if (AttackType == "PAttackHit")
+                {
+                    Raylib.DrawText(($"You thrust your sword into the foe with confidence,/nhitting the foe in the heart, dealing heavy damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                    }
+                }
+                else if (AttackType == "CAttackMiss")
+                {
+                    Raylib.DrawText(($"You swing your sword, but your confidence was lacking and you missed./n[SPACE] to proceed."), 50, 100, 25, Color.RED); 
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                    }
+                }
+                else if (AttackType == "CAttackHit")
+                {
+                    Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                    }
+                }
             }
     }
     else
