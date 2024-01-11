@@ -162,13 +162,13 @@ if (GameState == "NamePick")
         {
             Raylib.DrawText("You don't... want one? [Space]", 50, 240, 20, Color.RED);
             currentDialogue = 2;
-            waittime = framerate * 2;
+            waittime = framerate/3;
         }
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 2)
         {
             Raylib.DrawText(("I hope you won't regret your decision. [Space]"), 50, 280, 20, Color.RED);
             currentDialogue = 3;
-            waittime = framerate * 2;
+            waittime = framerate/3;
         }
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 3)
         {
@@ -253,20 +253,17 @@ if (GameState == "NamePick")
                 {
                     if (sceneData[y, x] == 0)
                     {
-                        Raylib.DrawTexture(backgroundImage, x * tileSize,y * tileSize, Color.WHITE);
                     }
                     if (sceneData[y, x] == 1)
                     {
-                        Raylib.DrawTexture(wallImage, x * tileSize,y * tileSize, Color.WHITE);
+                        Raylib.DrawRectangle( x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
                     }
                     if (sceneData[y, x] == 2)
                     {
-                        Raylib.DrawTexture(backgroundImage, x * tileSize,y * tileSize, Color.WHITE);
                         Raylib.DrawTexture(enemyImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
                     if (sceneData[y, x] == 3)
                     {
-                        Raylib.DrawTexture(backgroundImage, x * tileSize,y * tileSize, Color.WHITE);
                         Raylib.DrawTexture(collectibleImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
                 }
@@ -335,16 +332,16 @@ if (GameState == "Battle")
             accuracy = generator.Next(1,10);
             if (accuracy > 2)
             {
+                AttackType = "CAttackHit";
+                BattleState = "EnemyAttack";
                 playerdamage = generator.Next(3,15);
                 enemyhp -= playerdamage;
                 // enemyhp = Math.Max(0, enemyhp);
-                BattleState = "EnemyAttack";
-                AttackType = "CAttackHit";
             }
             else
             {
-                BattleState = "EnemyAttack";
                 AttackType = "CAttackMiss";
+                BattleState = "EnemyAttack";
             }
         }
             else if (BattleState == "PAttack")
@@ -352,18 +349,18 @@ if (GameState == "Battle")
                 accuracy = generator.Next(1,10); //try to use waiting time and if space is pressed waiting time = 0, or make generator run only once so you dont deal multiple instances of damage instantly cuz thats bad
                 if (accuracy > 5)
                 {
+                    AttackType = "PAttackHit";
+                    BattleState = "EnemyAttack";
                     playerdamage = generator.Next(5,22);
                     enemyhp -= playerdamage;
                     // enemyhp = Math.Max(0, enemyhp);
-                    BattleState = "EnemyAttack";
-                    AttackType = "PAttackHit";
                 }
                 else
                 {
-                    playerhp -= 5;
                     // playerhp = Math.Max(0, playerhp);
-                    BattleState = "EnemyAttack";
                     AttackType = "PAttackMiss";
+                    BattleState = "EnemyAttack";
+                    playerhp -= 5;
                 }
             }
             if (BattleState == "EnemyAttack")
@@ -372,53 +369,54 @@ if (GameState == "Battle")
                 enemydamage = generator.Next(2,13);
                 playerhp -= enemydamage;
                 // playerhp = Math.Max(0, playerhp);
-                // BattleState = "RoundSummary";
-            }
-            if (BattleState == "RoundSummary")
-            {
+    }
 
-                if (AttackType == "PAttackMiss")
-                {
-                    Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it on your toe,/ndealing 5 damage to yourself./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                    }
-                }
-                else if (AttackType == "PAttackHit")
-                {
-                    Raylib.DrawText(($"You thrust your sword into the foe with confidence,/nhitting the foe in the heart, dealing heavy damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                    }
-                }
-                else if (AttackType == "CAttackMiss")
-                {
-                    Raylib.DrawText(($"You swing your sword, but your confidence was lacking and you missed./n[SPACE] to proceed."), 50, 100, 25, Color.RED); 
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                    }
-                }
-                else if (AttackType == "CAttackHit")
-                {
-                    Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                    }
-                }
+        if (AttackType == "PAttackMiss")
+        {
+            Raylib.ClearBackground(Color.BLACK);
+            Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it/non your toe,dealing 5 damage to yourself."), 50, 220, 25, Color.RED);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            {
+                BattleState = "Menu";
             }
+        }
+        else if (AttackType == "PAttackHit")
+        {
+            Raylib.ClearBackground(Color.BLACK);
+            Raylib.DrawText(($"You thrust your sword into the foe with confidence,/nhitting the foe in the heart, dealing heavy damage."), 50, 220, 25, Color.RED);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            {
+                BattleState = "Menu";
+            }
+        }
+        else if (AttackType == "CAttackMiss")
+        {
+            Raylib.ClearBackground(Color.BLACK);
+            Raylib.DrawText(($"You swing your sword, but your confidence was lacking and you missed."), 50, 220, 25, Color.RED); 
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            {
+                BattleState = "Menu";
+            }
+        }
+        else if (AttackType == "CAttackHit")
+        {
+            Raylib.ClearBackground(Color.BLACK);
+            Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.RED);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            {
+                BattleState = "Menu";
+            }
+        }
+        
+    }
     }
     else
     {
         points += 1;
         playerhp = 100;
         enemyhp = 50;
-        BattleState = "Menu";
         GameState = "Labyrinth";
-    }
+        BattleState = "Menu";
     }
 }
     
