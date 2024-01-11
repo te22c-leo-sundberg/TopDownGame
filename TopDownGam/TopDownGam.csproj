@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Content Include="*.png" CopyToOutputDirectory="Always"/>
+    <Content Include="*Bricks.png" CopyToOutputDirectory="Always"/>
   </ItemGroup>
 
   <ItemGroup>

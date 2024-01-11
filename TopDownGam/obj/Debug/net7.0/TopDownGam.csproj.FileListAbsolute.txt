@@ -52,5 +52,5 @@ C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\obj\Debug\ne
 C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\obj\Debug\net7.0\ref\TopDownGam.dll
 C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\star.png
 C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\enemy.png
-C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\AI_PenTool.png
-C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\AI_YourLogo.png
+C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\Bricks.png
+C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\Background.png

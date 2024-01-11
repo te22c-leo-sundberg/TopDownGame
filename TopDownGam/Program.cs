@@ -19,7 +19,7 @@ string AttackType = "";
 
 string BattleState = "Menu";
 
-int waittime = framerate * 2;
+int waittime = framerate / 3;
 
 Raylib.InitWindow((int)GameX, (int)GameY, "(‿ˠ‿)");
 Raylib.SetTargetFPS(framerate);
@@ -132,6 +132,8 @@ List<Rectangle> collectibles = new();
 Texture2D enemyImage = Raylib.LoadTexture("enemy.png");
 Texture2D collectibleImage = Raylib.LoadTexture("star.png");
 Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
+Texture2D wallImage = Raylib.LoadTexture("Bricks.png");
+Texture2D backgroundImage = Raylib.LoadTexture("Background.png");
 Vector2 movement = Vector2.Zero;
 
 while (!Raylib.WindowShouldClose())
@@ -249,16 +251,22 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
+                    if (sceneData[y, x] == 0)
+                    {
+                        Raylib.DrawTexture(backgroundImage, x * tileSize,y * tileSize, Color.WHITE);
+                    }
                     if (sceneData[y, x] == 1)
                     {
-                        Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+                        Raylib.DrawTexture(wallImage, x * tileSize,y * tileSize, Color.WHITE);
                     }
                     if (sceneData[y, x] == 2)
                     {
+                        Raylib.DrawTexture(backgroundImage, x * tileSize,y * tileSize, Color.WHITE);
                         Raylib.DrawTexture(enemyImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
                     if (sceneData[y, x] == 3)
                     {
+                        Raylib.DrawTexture(backgroundImage, x * tileSize,y * tileSize, Color.WHITE);
                         Raylib.DrawTexture(collectibleImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
                 }
@@ -360,13 +368,15 @@ if (GameState == "Battle")
             }
             if (BattleState == "EnemyAttack")
             {
+                BattleState = "Menu";
                 enemydamage = generator.Next(2,13);
                 playerhp -= enemydamage;
                 // playerhp = Math.Max(0, playerhp);
-                BattleState = "RoundSummary";
+                // BattleState = "RoundSummary";
             }
             if (BattleState == "RoundSummary")
             {
+
                 if (AttackType == "PAttackMiss")
                 {
                     Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it on your toe,/ndealing 5 damage to yourself./n[SPACE] to proceed."), 50, 100, 25, Color.RED);
