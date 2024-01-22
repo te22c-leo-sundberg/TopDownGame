@@ -374,49 +374,62 @@ if (GameState == "Battle")
         if (AttackType == "PAttackMiss")
         {
             Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it/non your toe,dealing 5 damage to yourself."), 50, 220, 25, Color.RED);
+            Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 220, 25, Color.WHITE);
+            Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 248, 25, Color.WHITE);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
                 BattleState = "Menu";
+                AttackType = "None";
             }
         }
         else if (AttackType == "PAttackHit")
         {
             Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You thrust your sword into the foe with confidence,/nhitting the foe in the heart, dealing heavy damage."), 50, 220, 25, Color.RED);
+            Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 220, 25, Color.WHITE);
+            Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 248, 25, Color.WHITE);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
                 BattleState = "Menu";
+                AttackType = "None";
             }
         }
         else if (AttackType == "CAttackMiss")
         {
             Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You swing your sword, but your confidence was lacking and you missed."), 50, 220, 25, Color.RED); 
+            Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 220, 25, Color.WHITE); 
+            Raylib.DrawText(($"was lacking and you missed."), 50, 248, 25, Color.WHITE); 
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
                 BattleState = "Menu";
+                AttackType = "None";
             }
         }
         else if (AttackType == "CAttackHit")
         {
             Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.RED);
+            Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.WHITE);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
                 BattleState = "Menu";
+                AttackType = "None";
             }
         }
         
     }
     }
-    else
+    else if (enemyhp <= 0)
     {
         points += 1;
         playerhp = 100;
         enemyhp = 50;
+        Raylib.ClearBackground(Color.BLACK);
+        AttackType = "None";
         GameState = "Labyrinth";
         BattleState = "Menu";
+    }
+    else if (playerhp <= 0)
+    {
+        GameState = "Loser";
     }
 }
     
