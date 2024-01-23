@@ -52,7 +52,7 @@ camera.zoom = 1.0f;
 
 int[,] sceneData = {
 {1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
+{1,4,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
 {1,0,0,1,1,1,1,1,1,1,0,0,0,0,2,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,1,1},
 {1,0,1,1,0,0,2,1,0,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
 {1,0,1,3,0,1,0,0,0,1,0,0,1,3,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,2,0,1},
@@ -60,8 +60,8 @@ int[,] sceneData = {
 {1,0,0,2,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1},
 {1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1,1,0,0,1,1,1,1,0,0,0,0,1},
 {1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,2,0,0,1,0,1,0,1,1,1,1},
-{1,0,0,0,0,0,0,2,0,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1,2,1,0,0,0},
-{1,0,1,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,1,0,1,0,0,0},
+{1,0,0,0,0,0,0,2,0,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1,2,1,0,0,4},
+{1,0,1,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,1,0,1,0,0,4},
 {1,0,1,0,0,3,1,0,0,0,0,0,2,0,1,1,1,2,1,1,3,0,1,1,1,1,1,0,1,0,0,1},
 {1,0,1,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,1,0,0,1},
 {1,0,1,2,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,1,0,0,1,0,0,3,1,2,1,0,0,1},
@@ -81,11 +81,10 @@ List<Rectangle> walls = new();
         {
             if (sceneData[y, x] == 1)
             {
-                // Skapa en rektangel
+                
                 Rectangle r = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
                 walls.Add(r);
-                // Lägg till den i listan
-                // Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+
             }
         }
     }
@@ -100,11 +99,10 @@ List<Rectangle> enemies = new();
         {
             if (sceneData[y, x] == 2)
             {
-                // Skapa en rektangel
+
                 Rectangle e = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
                 enemies.Add(e);
-                // Lägg till den i listan
-                // Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+
             }
         }
     }
@@ -119,11 +117,27 @@ List<Rectangle> collectibles = new();
         {
             if (sceneData[y, x] == 3)
             {
-                // Skapa en rektangel
+
                 Rectangle c = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
                 collectibles.Add(c);
-                // Lägg till den i listan
-                // Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+
+            }
+        }
+    }
+}
+
+List<Rectangle> victory = new();
+{
+
+    for (int y = 0; y < sceneData.GetLength(0); y++)
+    {
+        for (int x = 0; x < sceneData.GetLength(1); x++)
+        {
+            if (sceneData[y, x] == 4)
+            {
+                Rectangle v = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
+                victory.Add(v);
+
             }
         }
     }
@@ -134,6 +148,7 @@ Texture2D collectibleImage = Raylib.LoadTexture("star.png");
 Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
 Texture2D wallImage = Raylib.LoadTexture("Bricks.png");
 Texture2D backgroundImage = Raylib.LoadTexture("Background.png");
+Texture2D goalImage = Raylib.LoadTexture("goalImage.png");
 Vector2 movement = Vector2.Zero;
 
 while (!Raylib.WindowShouldClose())
@@ -143,6 +158,7 @@ while (!Raylib.WindowShouldClose())
 
     if (GameState == "Menu")
     {
+        Raylib.ClearBackground(Color.BLACK);
         Raylib.DrawText("Press [SPACE] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
@@ -152,7 +168,7 @@ while (!Raylib.WindowShouldClose())
     
 if (GameState == "NamePick")
     {
-        Raylib.DrawText("What is your name, brave soul? [Space]", 50, 200, 20, Color.RED);
+        Raylib.DrawText("Welcome to my super scary labyrinth! [Space]", 50, 200, 20, Color.RED);
         if  (waittime > 0)
         {
             waittime--;
@@ -160,13 +176,13 @@ if (GameState == "NamePick")
         }
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 1)
         {
-            Raylib.DrawText("You don't... want one? [Space]", 50, 240, 20, Color.RED);
+            Raylib.DrawText("Don't be scared now! [Space]", 50, 240, 20, Color.RED);
             currentDialogue = 2;
             waittime = framerate/3;
         }
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 2)
         {
-            Raylib.DrawText(("I hope you won't regret your decision. [Space]"), 50, 280, 20, Color.RED);
+            Raylib.DrawText(("(It's pretty scary) [Space]"), 50, 280, 20, Color.RED);
             currentDialogue = 3;
             waittime = framerate/3;
         }
@@ -223,7 +239,7 @@ if (GameState == "NamePick")
             playerRect.y -= movement.Y;
         }
 
-        Rectangle collectibleRect = CheckCollectibleCollision(playerRect, collectibles); //checkar collisions och skapar rektangel ifall collision true
+        Rectangle collectibleRect = CheckCollectibleCollision(playerRect, collectibles);
         if (collectibleRect.width != 0)
         {
             points += 3;
@@ -235,7 +251,25 @@ if (GameState == "NamePick")
                     if (sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] == 3)
                     {
                     sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] = 0;
-                    } 
+                    }
+                }
+            }
+        }
+
+        Rectangle victoryRect = CheckVictoryCollision(playerRect, victory);
+        if (victoryRect.width != 0)
+        {
+            points += 10;
+            victory.Remove(victoryRect);
+            GameState = "Victory";
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] == 4)
+                    {
+                    sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] = 0;
+                    }
                 }
             }
         }
@@ -266,12 +300,16 @@ if (GameState == "NamePick")
                     {
                         Raylib.DrawTexture(collectibleImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
+                    if (sceneData[y, x] == 4)
+                    {
+                        Raylib.DrawTexture(goalImage, x * tileSize, y * tileSize, Color.WHITE);
+                    }
                 }
             }
 
-       
         
-        Rectangle enemiesRect = CheckEnemyCollision(playerRect, enemies); //checkar collisions och skapar rektangel ifall collision true
+        
+        Rectangle enemiesRect = CheckEnemyCollision(playerRect, enemies);
         if (enemiesRect.width != 0)
         {
             GameState = "Battle";
@@ -287,7 +325,7 @@ if (GameState == "NamePick")
                 }
             }
         }
-
+        
             Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
 
             Raylib.DrawText(($"Points:{points}"), (int)playerRect.x-350, (int)playerRect.y-350, 20, Color.YELLOW);
@@ -299,12 +337,7 @@ if (GameState == "NamePick")
 
 if (GameState == "Battle")
 {
-
-    
-
     var random = new Random();
-
-
     Raylib.ClearBackground(Color.BLACK);
 
     if (playerhp > 0 && enemyhp > 0)
@@ -336,7 +369,6 @@ if (GameState == "Battle")
                 BattleState = "EnemyAttack";
                 playerdamage = generator.Next(3,15);
                 enemyhp -= playerdamage;
-                // enemyhp = Math.Max(0, enemyhp);
             }
             else
             {
@@ -346,18 +378,16 @@ if (GameState == "Battle")
         }
             else if (BattleState == "PAttack")
             {
-                accuracy = generator.Next(1,10); //try to use waiting time and if space is pressed waiting time = 0, or make generator run only once so you dont deal multiple instances of damage instantly cuz thats bad
-                if (accuracy > 5)
+                accuracy = generator.Next(1,10);
+                if (accuracy > 4)
                 {
                     AttackType = "PAttackHit";
                     BattleState = "EnemyAttack";
                     playerdamage = generator.Next(5,22);
                     enemyhp -= playerdamage;
-                    // enemyhp = Math.Max(0, enemyhp);
                 }
                 else
                 {
-                    // playerhp = Math.Max(0, playerhp);
                     AttackType = "PAttackMiss";
                     BattleState = "EnemyAttack";
                     playerhp -= 5;
@@ -368,7 +398,6 @@ if (GameState == "Battle")
                 BattleState = "Menu";
                 enemydamage = generator.Next(2,13);
                 playerhp -= enemydamage;
-                // playerhp = Math.Max(0, playerhp);
     }
 
         if (AttackType == "PAttackMiss")
@@ -414,7 +443,7 @@ if (GameState == "Battle")
                 AttackType = "None";
             }
         }
-        
+
     }
     }
     else if (enemyhp <= 0)
@@ -432,8 +461,31 @@ if (GameState == "Battle")
         GameState = "Loser";
     }
 }
-    
+if (GameState == "Loser")
+{
+    Raylib.ClearBackground(Color.BLACK);
+    Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 220, 25, Color.RED);
+    Raylib.DrawText(($"I couldn't care less tbh. GG's."), 50, 248, 25, Color.RED);
+    Raylib.DrawText(($"I'll deduct a point for the lackluster performance."), 50, 276, 25, Color.RED);
+    Raylib.DrawText(($"[Space] to respawn."), 50, 304, 25, Color.RED);
 
+    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+    {
+        GameState = "Labyrinth";
+        points -= 1;
+        playerRect.x = 400;
+        playerRect.y = -300;
+    }
+}
+if (GameState == "Victory")
+{
+    Raylib.ClearBackground(Color.BLACK);
+    Raylib.DrawText(("+10 Points!"), 50, 170, 25, Color.WHITE);
+    Raylib.DrawText(("Congratulations, you have showed at least some competence!"), 50, 220, 25, Color.RED);
+    Raylib.DrawText(($"You gained a total of {points} points!"), 50, 248, 25, Color.RED);
+    Raylib.DrawText(($"Uhh, anyway, you'll have to leave, you kinda stink."), 50, 276, 25, Color.RED);
+    Raylib.DrawText(($"[Esc] to exit."), 50, 304, 25, Color.RED);
+}
     Raylib.EndDrawing();
 }
 
@@ -463,13 +515,26 @@ static Rectangle CheckEnemyCollision(Rectangle playerRect, List<Rectangle> enemi
     return new Rectangle();
 }
 
-static Rectangle CheckCollectibleCollision(Rectangle playerRect, List<Rectangle> collectibles) //returnera rektangel
+static Rectangle CheckCollectibleCollision(Rectangle playerRect, List<Rectangle> collectibles)
 {
     foreach (Rectangle c in collectibles)
     {
         if (Raylib.CheckCollisionRecs(playerRect, c))
         {
             return c;
+        }
+    }
+
+    return new Rectangle();
+}
+
+static Rectangle CheckVictoryCollision(Rectangle playerRect, List<Rectangle> victory)
+{
+    foreach (Rectangle v in victory)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, v))
+        {
+            return v;
         }
     }
 

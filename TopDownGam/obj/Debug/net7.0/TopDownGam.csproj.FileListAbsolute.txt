@@ -58,3 +58,4 @@ C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\ne
 C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\JESUS.png
 C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\LOOKIES.png
 C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\REDBOOTS.png
+C:\Users\leo.sundberg1\Desktop\Programming\Vinterprojekt\TopDownGam\bin\Debug\net7.0\goalImage.png
