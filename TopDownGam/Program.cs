@@ -13,6 +13,10 @@ string GameState = "Menu";
 float GameX = 900;
 float GameY = 900;
 
+bool redBoots = false;
+bool Jesus = false;
+bool Lookies = false;
+
 int framerate = 60;
 
 string AttackType = "";
@@ -51,8 +55,13 @@ camera.rotation = 0.0f;
 camera.zoom = 1.0f;
 
 int[,] sceneData = {
+{1,0,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{1,0,0,0,2,0,4,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{1,0,0,0,0,0,6,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{1,0,0,0,0,0,3,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{1,0,0,0,0,0,7,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 {1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,4,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
+{1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
 {1,0,0,1,1,1,1,1,1,1,0,0,0,0,2,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,1,1},
 {1,0,1,1,0,0,2,1,0,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
 {1,0,1,3,0,1,0,0,0,1,0,0,1,3,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,2,0,1},
@@ -73,6 +82,14 @@ int[,] sceneData = {
 };
 
 List<Rectangle> walls = new();
+List<Rectangle> enemies = new();
+List<Rectangle> collectibles = new();
+List<Rectangle> victory = new();
+List<Rectangle> redBoot = new();
+List<Rectangle> Lookie = new();
+List<Rectangle> Jesu = new();
+
+
 {
 
     for (int y = 0; y < sceneData.GetLength(0); y++)
@@ -80,23 +97,11 @@ List<Rectangle> walls = new();
         for (int x = 0; x < sceneData.GetLength(1); x++)
         {
             if (sceneData[y, x] == 1)
-            {
-                
+            {   
                 Rectangle r = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
                 walls.Add(r);
 
             }
-        }
-    }
-}
-
-List<Rectangle> enemies = new();
-{
-
-    for (int y = 0; y < sceneData.GetLength(0); y++)
-    {
-        for (int x = 0; x < sceneData.GetLength(1); x++)
-        {
             if (sceneData[y, x] == 2)
             {
 
@@ -104,17 +109,6 @@ List<Rectangle> enemies = new();
                 enemies.Add(e);
 
             }
-        }
-    }
-}
-
-List<Rectangle> collectibles = new();
-{
-
-    for (int y = 0; y < sceneData.GetLength(0); y++)
-    {
-        for (int x = 0; x < sceneData.GetLength(1); x++)
-        {
             if (sceneData[y, x] == 3)
             {
 
@@ -122,26 +116,34 @@ List<Rectangle> collectibles = new();
                 collectibles.Add(c);
 
             }
-        }
-    }
-}
-
-List<Rectangle> victory = new();
-{
-
-    for (int y = 0; y < sceneData.GetLength(0); y++)
-    {
-        for (int x = 0; x < sceneData.GetLength(1); x++)
-        {
             if (sceneData[y, x] == 4)
             {
                 Rectangle v = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
                 victory.Add(v);
 
             }
+            if (sceneData[y, x] == 5)
+            {
+                Rectangle rb = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
+                redBoot.Add(rb);
+
+            }
+            if (sceneData[y, x] == 6)
+            {
+                Rectangle l = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
+                Lookie.Add(l);
+
+            }
+            if (sceneData[y, x] == 7)
+            {
+                Rectangle j = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
+                Jesu.Add(j);
+
+            }
         }
     }
 }
+
 
 Texture2D enemyImage = Raylib.LoadTexture("enemy.png");
 Texture2D collectibleImage = Raylib.LoadTexture("star.png");
@@ -149,6 +151,9 @@ Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
 Texture2D wallImage = Raylib.LoadTexture("Bricks.png");
 Texture2D backgroundImage = Raylib.LoadTexture("Background.png");
 Texture2D goalImage = Raylib.LoadTexture("goalImage.png");
+Texture2D jesusImage = Raylib.LoadTexture("JESUS.png");
+Texture2D redbootsImage = Raylib.LoadTexture("REDBOOTS.png");
+Texture2D lookiesImage = Raylib.LoadTexture("LOOKIES.png");
 Vector2 movement = Vector2.Zero;
 
 while (!Raylib.WindowShouldClose())
@@ -196,6 +201,55 @@ if (GameState == "NamePick")
     if (GameState == "Labyrinth")
     {
 
+        Rectangle redBootRect = CheckRedBootCollision(playerRect, redBoot);
+        if (redBootRect.width != 0)
+        {
+            redBoots = true;
+            redBoot.Remove(redBootRect);
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)redBootRect.y/tileSize,(int)redBootRect.x/tileSize] == 5)
+                    {
+                    sceneData[(int)redBootRect.y/tileSize,(int)redBootRect.x/tileSize] = 0;
+                    } 
+                }
+            }
+        }
+        Rectangle LookiesRect = CheckLookieCollision(playerRect, Lookie);
+        if (LookiesRect.width != 0)
+        {
+            Lookies = true;
+            Lookie.Remove(LookiesRect);
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] == 5)
+                    {
+                    sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] = 0;
+                    } 
+                }
+            }
+        }
+                Rectangle JesusRect = CheckLookieCollision(playerRect, Lookie);
+        if (LookiesRect.width != 0)
+        {
+            Lookies = true;
+            Lookie.Remove(LookiesRect);
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] == 5)
+                    {
+                    sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] = 0;
+                    }
+                }
+            }
+        }
+        
         camera.target = new Vector2(playerRect.x + playerSizeX / 2, playerRect.x + playerSizeY / 2);
 
         movement = Vector2.Zero;
@@ -223,7 +277,14 @@ if (GameState == "NamePick")
             movement = Vector2.Normalize(movement);
         }
 
-        movement *= speed;
+        if (redBoots == false)
+        {
+            movement *= speed;
+        }
+        else if (redBoots == true)
+        {
+            movement *= speed+5;
+        }
 
         playerRect.x += movement.X;
 
@@ -303,6 +364,18 @@ if (GameState == "NamePick")
                     if (sceneData[y, x] == 4)
                     {
                         Raylib.DrawTexture(goalImage, x * tileSize, y * tileSize, Color.WHITE);
+                    }
+                    if (sceneData[y, x] == 5)
+                    {
+                        Raylib.DrawTexture(redbootsImage, x * tileSize, y * tileSize, Color.WHITE);
+                    }
+                    if (sceneData[y, x] == 6)
+                    {
+                        Raylib.DrawTexture(lookiesImage, x * tileSize, y * tileSize, Color.WHITE);
+                    }
+                    if (sceneData[y, x] == 7)
+                    {
+                        Raylib.DrawTexture(jesusImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
                 }
             }
@@ -535,6 +608,45 @@ static Rectangle CheckVictoryCollision(Rectangle playerRect, List<Rectangle> vic
         if (Raylib.CheckCollisionRecs(playerRect, v))
         {
             return v;
+        }
+    }
+
+    return new Rectangle();
+}
+
+static Rectangle CheckRedBootCollision(Rectangle playerRect, List<Rectangle> redBoot)
+{
+    foreach (Rectangle v in redBoot)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, v))
+        {
+            return v;
+        }
+    }
+
+    return new Rectangle();
+}
+
+static Rectangle CheckLookieCollision(Rectangle playerRect, List<Rectangle> Lookie)
+{
+    foreach (Rectangle l in Lookie)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, l))
+        {
+            return l;
+        }
+    }
+
+    return new Rectangle();
+}
+
+static Rectangle CheckJesuCollision(Rectangle playerRect, List<Rectangle> Jesu)
+{
+    foreach (Rectangle j in Jesu)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, j))
+        {
+            return j;
         }
     }
 
