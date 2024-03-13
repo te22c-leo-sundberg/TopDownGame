@@ -21,7 +21,7 @@ int framerate = 60;
 
 string AttackType = "";
 
-string BattleState = "Menu";
+string BattleState = "Menu";    
 
 int waittime = framerate / 3;
 
@@ -145,15 +145,15 @@ List<Rectangle> Jesu = new();
 }
 
 
-Texture2D enemyImage = Raylib.LoadTexture("enemy.png");
-Texture2D collectibleImage = Raylib.LoadTexture("star.png");
-Texture2D playerRectImage = Raylib.LoadTexture("cryingchild3.png");
-Texture2D wallImage = Raylib.LoadTexture("Bricks.png");
-Texture2D backgroundImage = Raylib.LoadTexture("Background.png");
-Texture2D goalImage = Raylib.LoadTexture("goalImage.png");
-Texture2D jesusImage = Raylib.LoadTexture("JESUS.png");
-Texture2D redbootsImage = Raylib.LoadTexture("REDBOOTS.png");
-Texture2D lookiesImage = Raylib.LoadTexture("LOOKIES.png");
+Texture2D enemyImage = Raylib.LoadTexture("pictures/enemy.png");
+Texture2D collectibleImage = Raylib.LoadTexture("pictures/star.png");
+Texture2D playerRectImage = Raylib.LoadTexture("pictures/cryingchild3.png");
+Texture2D wallImage = Raylib.LoadTexture("pictures/Bricks.png");
+Texture2D backgroundImage = Raylib.LoadTexture("pictures/Background.png");
+Texture2D goalImage = Raylib.LoadTexture("pictures/goalImage.png");
+Texture2D jesusImage = Raylib.LoadTexture("pictures/JESUS.png");
+Texture2D redbootsImage = Raylib.LoadTexture("pictures/REDBOOTS.png");
+Texture2D lookiesImage = Raylib.LoadTexture("pictures/LOOKIES.png");
 Vector2 movement = Vector2.Zero;
 
 while (!Raylib.WindowShouldClose())
@@ -167,7 +167,7 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("Press [SPACE] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-                GameState = "NamePick";
+                GameState = "Labyrinth";
         } 
     }
     
@@ -616,11 +616,11 @@ static Rectangle CheckVictoryCollision(Rectangle playerRect, List<Rectangle> vic
 
 static Rectangle CheckRedBootCollision(Rectangle playerRect, List<Rectangle> redBoot)
 {
-    foreach (Rectangle v in redBoot)
+    foreach (Rectangle rb in redBoot)
     {
-        if (Raylib.CheckCollisionRecs(playerRect, v))
+        if (Raylib.CheckCollisionRecs(playerRect, rb))
         {
-            return v;
+            return rb;
         }
     }
 
@@ -652,3 +652,56 @@ static Rectangle CheckJesuCollision(Rectangle playerRect, List<Rectangle> Jesu)
 
     return new Rectangle();
 }
+
+// static Rectangle CheckCollisions(Rectangle playerRect, List<Rectangle> Lookie, List<Rectangle> Jesu, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> enemies, List<Rectangle> collectibles)
+// {
+//     foreach (Rectangle l in Lookie)
+//     {
+//         if (Raylib.CheckCollisionRecs(playerRect, l))
+//         {
+//             return l;
+//         }
+//     }
+
+//     foreach (Rectangle j in Jesu)
+//     {
+//         if (Raylib.CheckCollisionRecs(playerRect, j))
+//         {
+//             return j;
+//         }
+//     }
+    
+//     foreach (Rectangle rb in redBoot)
+//     {
+//         if (Raylib.CheckCollisionRecs(playerRect, rb))
+//         {
+//             return rb;
+//         }
+//     }
+
+//     foreach (Rectangle v in victory)
+//     {
+//         if (Raylib.CheckCollisionRecs(playerRect, v))
+//         {
+//             return v;
+//         }
+//     }
+
+//     foreach (Rectangle c in collectibles)
+//     {
+//         if (Raylib.CheckCollisionRecs(playerRect, c))
+//         {
+//             return c;
+//         }
+//     }
+
+//     foreach (Rectangle e in enemies)
+//     {
+//         if (Raylib.CheckCollisionRecs(playerRect, e))
+//         {
+//             return e;
+//         }
+//     }
+
+//     return new Rectangle();
+// }
