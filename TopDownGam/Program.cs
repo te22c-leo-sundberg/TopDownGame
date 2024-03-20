@@ -36,6 +36,7 @@ int points = 0;
 
 float speed = 5;
 
+    // Combat
 int playerhp = 100;
 int enemyhp = 50;
 int accuracy;
@@ -167,7 +168,7 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("Press [SPACE] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-                GameState = "Labyrinth";
+                GameState = "NamePick";
         } 
     }
     
@@ -200,8 +201,25 @@ if (GameState == "NamePick")
 
     if (GameState == "Labyrinth")
     {
+                
+        Rectangle enemiesRect = CheckCollisions(playerRect, enemies);
+        if (enemiesRect.width != 0)
+        {
+            GameState = "Battle";
+            enemies.Remove(enemiesRect);
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] == 2)
+                    {
+                    sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] = 0;
+                    } 
+                }
+            }
+        }
 
-        Rectangle redBootRect = CheckRedBootCollision(playerRect, redBoot);
+        Rectangle redBootRect = CheckCollisions(playerRect, redBoot);
         if (redBootRect.width != 0)
         {
             redBoots = true;
@@ -217,7 +235,7 @@ if (GameState == "NamePick")
                 }
             }
         }
-        Rectangle LookiesRect = CheckLookieCollision(playerRect, Lookie);
+        Rectangle LookiesRect = CheckCollisions(playerRect, Lookie);
         if (LookiesRect.width != 0)
         {
             Lookies = true;
@@ -233,7 +251,7 @@ if (GameState == "NamePick")
                 }
             }
         }
-                Rectangle JesusRect = CheckLookieCollision(playerRect, Lookie);
+        Rectangle JesusRect = CheckCollisions(playerRect, Lookie);
         if (LookiesRect.width != 0)
         {
             Lookies = true;
@@ -245,6 +263,41 @@ if (GameState == "NamePick")
                     if (sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] == 5)
                     {
                     sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] = 0;
+                    }
+                }
+            }
+        }
+
+        Rectangle collectibleRect = CheckCollisions(playerRect, collectibles);
+        if (collectibleRect.width != 0)
+        {
+            points += 3;
+            collectibles.Remove(collectibleRect);
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] == 3)
+                    {
+                    sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] = 0;
+                    }
+                }
+            }
+        }
+
+        Rectangle victoryRect = CheckCollisions(playerRect, victory);
+        if (victoryRect.width != 0)
+        {
+            points += 10;
+            victory.Remove(victoryRect);
+            GameState = "Victory";
+            for (int y = 0; y < sceneData.GetLength(0); y++)
+            {
+                for (int x = 0; x < sceneData.GetLength(1); x++)
+                {
+                    if (sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] == 4)
+                    {
+                    sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] = 0;
                     }
                 }
             }
@@ -300,41 +353,6 @@ if (GameState == "NamePick")
             playerRect.y -= movement.Y;
         }
 
-        Rectangle collectibleRect = CheckCollectibleCollision(playerRect, collectibles);
-        if (collectibleRect.width != 0)
-        {
-            points += 3;
-            collectibles.Remove(collectibleRect);
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
-                    if (sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] == 3)
-                    {
-                    sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] = 0;
-                    }
-                }
-            }
-        }
-
-        Rectangle victoryRect = CheckVictoryCollision(playerRect, victory);
-        if (victoryRect.width != 0)
-        {
-            points += 10;
-            victory.Remove(victoryRect);
-            GameState = "Victory";
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
-                    if (sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] == 4)
-                    {
-                    sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] = 0;
-                    }
-                }
-            }
-        }
-
         Raylib.ClearBackground(Color.BLACK);
 
         if (CameraReal == true)
@@ -346,9 +364,6 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
-                    if (sceneData[y, x] == 0)
-                    {
-                    }
                     if (sceneData[y, x] == 1)
                     {
                         Raylib.DrawRectangle( x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
@@ -379,25 +394,6 @@ if (GameState == "NamePick")
                     }
                 }
             }
-
-        
-        
-        Rectangle enemiesRect = CheckEnemyCollision(playerRect, enemies);
-        if (enemiesRect.width != 0)
-        {
-            GameState = "Battle";
-            enemies.Remove(enemiesRect);
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
-                    if (sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] == 2)
-                    {
-                    sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] = 0;
-                    } 
-                }
-            }
-        }
         
             Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
 
@@ -575,9 +571,49 @@ static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
     return false;
 }
 
-static Rectangle CheckEnemyCollision(Rectangle playerRect, List<Rectangle> enemies)
+static Rectangle CheckCollisions(Rectangle playerRect, List<Rectangle> hitBoxes)
 {
-    foreach (Rectangle e in enemies)
+    foreach (Rectangle l in hitBoxes)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, l))
+        {
+            return l;
+        }
+    }
+
+    foreach (Rectangle j in hitBoxes)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, j))
+        {
+            return j;
+        }
+    }
+    
+    foreach (Rectangle rb in hitBoxes)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, rb))
+        {
+            return rb;
+        }
+    }
+
+    foreach (Rectangle v in hitBoxes)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, v))
+        {
+            return v;
+        }
+    }
+
+    foreach (Rectangle c in hitBoxes)
+    {
+        if (Raylib.CheckCollisionRecs(playerRect, c))
+        {
+            return c;
+        }
+    }
+
+    foreach (Rectangle e in hitBoxes)
     {
         if (Raylib.CheckCollisionRecs(playerRect, e))
         {
@@ -587,121 +623,3 @@ static Rectangle CheckEnemyCollision(Rectangle playerRect, List<Rectangle> enemi
 
     return new Rectangle();
 }
-
-static Rectangle CheckCollectibleCollision(Rectangle playerRect, List<Rectangle> collectibles)
-{
-    foreach (Rectangle c in collectibles)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, c))
-        {
-            return c;
-        }
-    }
-
-    return new Rectangle();
-}
-
-static Rectangle CheckVictoryCollision(Rectangle playerRect, List<Rectangle> victory)
-{
-    foreach (Rectangle v in victory)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, v))
-        {
-            return v;
-        }
-    }
-
-    return new Rectangle();
-}
-
-static Rectangle CheckRedBootCollision(Rectangle playerRect, List<Rectangle> redBoot)
-{
-    foreach (Rectangle rb in redBoot)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, rb))
-        {
-            return rb;
-        }
-    }
-
-    return new Rectangle();
-}
-
-static Rectangle CheckLookieCollision(Rectangle playerRect, List<Rectangle> Lookie)
-{
-    foreach (Rectangle l in Lookie)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, l))
-        {
-            return l;
-        }
-    }
-
-    return new Rectangle();
-}
-
-static Rectangle CheckJesuCollision(Rectangle playerRect, List<Rectangle> Jesu)
-{
-    foreach (Rectangle j in Jesu)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, j))
-        {
-            return j;
-        }
-    }
-
-    return new Rectangle();
-}
-
-// static Rectangle CheckCollisions(Rectangle playerRect, List<Rectangle> Lookie, List<Rectangle> Jesu, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> enemies, List<Rectangle> collectibles)
-// {
-//     foreach (Rectangle l in Lookie)
-//     {
-//         if (Raylib.CheckCollisionRecs(playerRect, l))
-//         {
-//             return l;
-//         }
-//     }
-
-//     foreach (Rectangle j in Jesu)
-//     {
-//         if (Raylib.CheckCollisionRecs(playerRect, j))
-//         {
-//             return j;
-//         }
-//     }
-    
-//     foreach (Rectangle rb in redBoot)
-//     {
-//         if (Raylib.CheckCollisionRecs(playerRect, rb))
-//         {
-//             return rb;
-//         }
-//     }
-
-//     foreach (Rectangle v in victory)
-//     {
-//         if (Raylib.CheckCollisionRecs(playerRect, v))
-//         {
-//             return v;
-//         }
-//     }
-
-//     foreach (Rectangle c in collectibles)
-//     {
-//         if (Raylib.CheckCollisionRecs(playerRect, c))
-//         {
-//             return c;
-//         }
-//     }
-
-//     foreach (Rectangle e in enemies)
-//     {
-//         if (Raylib.CheckCollisionRecs(playerRect, e))
-//         {
-//             return e;
-//         }
-//     }
-
-//     return new Rectangle();
-// }
