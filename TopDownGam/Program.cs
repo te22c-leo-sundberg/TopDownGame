@@ -21,7 +21,7 @@ int framerate = 60;
 
 string AttackType = "";
 
-string BattleState = "Menu";    
+string BattleState = "Menu";
 
 int waittime = framerate / 3;
 
@@ -36,19 +36,17 @@ int points = 0;
 
 float speed = 5;
 
-    // Combat
+// Combat
 int playerhp = 100;
 int enemyhp = 50;
 int accuracy;
-int playerdamage;
-int enemydamage;
 
 float playerSizeX = 66;
 float playerSizeY = 53;
 
 int tileSize = 200;
 
-Rectangle playerRect = new Rectangle( 400, -300, playerSizeY, playerSizeX);
+Rectangle playerRect = new Rectangle(400, -300, playerSizeY, playerSizeX);
 
 Camera2D camera = new Camera2D();
 camera.offset = new Vector2(GameX / 2, GameY / 2);
@@ -90,7 +88,6 @@ List<Rectangle> redBoot = new();
 List<Rectangle> Lookie = new();
 List<Rectangle> Jesu = new();
 
-
 {
 
     for (int y = 0; y < sceneData.GetLength(0); y++)
@@ -98,7 +95,7 @@ List<Rectangle> Jesu = new();
         for (int x = 0; x < sceneData.GetLength(1); x++)
         {
             if (sceneData[y, x] == 1)
-            {   
+            {
                 Rectangle r = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
                 walls.Add(r);
 
@@ -168,14 +165,14 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("Press [SPACE] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-                GameState = "NamePick";
-        } 
+            GameState = "NamePick";
+        }
     }
-    
-if (GameState == "NamePick")
+
+    if (GameState == "NamePick")
     {
         Raylib.DrawText("Welcome to my super scary labyrinth! [Space]", 50, 200, 20, Color.RED);
-        if  (waittime > 0)
+        if (waittime > 0)
         {
             waittime--;
             Console.WriteLine(waittime);
@@ -184,13 +181,13 @@ if (GameState == "NamePick")
         {
             Raylib.DrawText("Don't be scared now! [Space]", 50, 240, 20, Color.RED);
             currentDialogue = 2;
-            waittime = framerate/3;
+            waittime = framerate / 3;
         }
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 2)
         {
             Raylib.DrawText(("(It's pretty scary) [Space]"), 50, 280, 20, Color.RED);
             currentDialogue = 3;
-            waittime = framerate/3;
+            waittime = framerate / 3;
         }
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 3)
         {
@@ -201,7 +198,7 @@ if (GameState == "NamePick")
 
     if (GameState == "Labyrinth")
     {
-                
+
         Rectangle enemiesRect = CheckCollisions(playerRect, enemies);
         if (enemiesRect.width != 0)
         {
@@ -211,10 +208,10 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
-                    if (sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] == 2)
+                    if (sceneData[(int)enemiesRect.y / tileSize, (int)enemiesRect.x / tileSize] == 2)
                     {
-                    sceneData[(int)enemiesRect.y/tileSize,(int)enemiesRect.x/tileSize] = 0;
-                    } 
+                        sceneData[(int)enemiesRect.y / tileSize, (int)enemiesRect.x / tileSize] = 0;
+                    }
                 }
             }
         }
@@ -228,10 +225,10 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
-                    if (sceneData[(int)redBootRect.y/tileSize,(int)redBootRect.x/tileSize] == 5)
+                    if (sceneData[(int)redBootRect.y / tileSize, (int)redBootRect.x / tileSize] == 5)
                     {
-                    sceneData[(int)redBootRect.y/tileSize,(int)redBootRect.x/tileSize] = 0;
-                    } 
+                        sceneData[(int)redBootRect.y / tileSize, (int)redBootRect.x / tileSize] = 0;
+                    }
                 }
             }
         }
@@ -244,10 +241,10 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
-                    if (sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] == 5)
+                    if (sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] == 5)
                     {
-                    sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] = 0;
-                    } 
+                        sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] = 0;
+                    }
                 }
             }
         }
@@ -260,9 +257,9 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
-                    if (sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] == 5)
+                    if (sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] == 5)
                     {
-                    sceneData[(int)LookiesRect.y/tileSize,(int)LookiesRect.x/tileSize] = 0;
+                        sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] = 0;
                     }
                 }
             }
@@ -277,9 +274,9 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
-                    if (sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] == 3)
+                    if (sceneData[(int)collectibleRect.y / tileSize, (int)collectibleRect.x / tileSize] == 3)
                     {
-                    sceneData[(int)collectibleRect.y/tileSize,(int)collectibleRect.x/tileSize] = 0;
+                        sceneData[(int)collectibleRect.y / tileSize, (int)collectibleRect.x / tileSize] = 0;
                     }
                 }
             }
@@ -295,14 +292,14 @@ if (GameState == "NamePick")
             {
                 for (int x = 0; x < sceneData.GetLength(1); x++)
                 {
-                    if (sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] == 4)
+                    if (sceneData[(int)victoryRect.y / tileSize, (int)victoryRect.x / tileSize] == 4)
                     {
-                    sceneData[(int)victoryRect.y/tileSize,(int)victoryRect.x/tileSize] = 0;
+                        sceneData[(int)victoryRect.y / tileSize, (int)victoryRect.x / tileSize] = 0;
                     }
                 }
             }
         }
-        
+
         camera.target = new Vector2(playerRect.x + playerSizeX / 2, playerRect.x + playerSizeY / 2);
 
         movement = Vector2.Zero;
@@ -336,7 +333,7 @@ if (GameState == "NamePick")
         }
         else if (redBoots == true)
         {
-            movement *= speed+5;
+            movement *= speed + 5;
         }
 
         playerRect.x += movement.X;
@@ -366,7 +363,7 @@ if (GameState == "NamePick")
                 {
                     if (sceneData[y, x] == 1)
                     {
-                        Raylib.DrawRectangle( x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
+                        Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
                     }
                     if (sceneData[y, x] == 2)
                     {
@@ -394,170 +391,170 @@ if (GameState == "NamePick")
                     }
                 }
             }
-        
+
             Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
 
-            Raylib.DrawText(($"Points:{points}"), (int)playerRect.x-350, (int)playerRect.y-350, 20, Color.YELLOW);
+            Raylib.DrawText(($"Points:{points}"), (int)playerRect.x - 350, (int)playerRect.y - 350, 20, Color.YELLOW);
 
             Raylib.EndMode2D();
-            
+
         }
     }
 
-if (GameState == "Battle")
-{
-    var random = new Random();
-    Raylib.ClearBackground(Color.BLACK);
-
-    if (playerhp > 0 && enemyhp > 0)
+    if (GameState == "Battle")
     {
-    Raylib.DrawText(($"Your health:{playerhp}"), 50, 760, 25, Color.RED);
-    Raylib.DrawText(($"Foe health:{enemyhp}"), 50, 800, 25, Color.RED);
-
-    if (BattleState == "Menu")
-    {
-        Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 50, 100, 25, Color.RED);
-        Raylib.DrawText(("What is your decison?"), 50, 140, 25, Color.RED);
-        Raylib.DrawText(("[C]arve or [P]uncture"), 50, 180, 25, Color.RED);
-
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
-        {
-            BattleState = "CAttack";
-        }
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
-        {
-            BattleState = "PAttack";
-        }
-        
-        if (BattleState == "CAttack")
-        {
-            accuracy = generator.Next(1,10);
-            if (accuracy > 2)
-            {
-                AttackType = "CAttackHit";
-                BattleState = "EnemyAttack";
-                playerdamage = generator.Next(3,15);
-                enemyhp -= playerdamage;
-            }
-            else
-            {
-                AttackType = "CAttackMiss";
-                BattleState = "EnemyAttack";
-            }
-        }
-            else if (BattleState == "PAttack")
-            {
-                accuracy = generator.Next(1,10);
-                if (accuracy > 4)
-                {
-                    AttackType = "PAttackHit";
-                    BattleState = "EnemyAttack";
-                    playerdamage = generator.Next(5,22);
-                    enemyhp -= playerdamage;
-                }
-                else
-                {
-                    AttackType = "PAttackMiss";
-                    BattleState = "EnemyAttack";
-                    playerhp -= 5;
-                }
-            }
-            if (BattleState == "EnemyAttack")
-            {
-                BattleState = "Menu";
-                enemydamage = generator.Next(2,13);
-                playerhp -= enemydamage;
-    }
-
-        if (AttackType == "PAttackMiss")
-        {
-            Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 220, 25, Color.WHITE);
-            Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 248, 25, Color.WHITE);
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-            {
-                BattleState = "Menu";
-                AttackType = "None";
-            }
-        }
-        else if (AttackType == "PAttackHit")
-        {
-            Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 220, 25, Color.WHITE);
-            Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 248, 25, Color.WHITE);
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-            {
-                BattleState = "Menu";
-                AttackType = "None";
-            }
-        }
-        else if (AttackType == "CAttackMiss")
-        {
-            Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 220, 25, Color.WHITE); 
-            Raylib.DrawText(($"was lacking and you missed."), 50, 248, 25, Color.WHITE); 
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-            {
-                BattleState = "Menu";
-                AttackType = "None";
-            }
-        }
-        else if (AttackType == "CAttackHit")
-        {
-            Raylib.ClearBackground(Color.BLACK);
-            Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.WHITE);
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-            {
-                BattleState = "Menu";
-                AttackType = "None";
-            }
-        }
-
-    }
-    }
-    else if (enemyhp <= 0)
-    {
-        points += 1;
-        playerhp = 100;
-        enemyhp = 50;
+        var random = new Random();
         Raylib.ClearBackground(Color.BLACK);
-        AttackType = "None";
-        GameState = "Labyrinth";
-        BattleState = "Menu";
-    }
-    else if (playerhp <= 0)
-    {
-        GameState = "Loser";
-    }
-}
-if (GameState == "Loser")
-{
-    Raylib.ClearBackground(Color.BLACK);
-    Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 220, 25, Color.RED);
-    Raylib.DrawText(($"I couldn't care less tbh. GG's."), 50, 248, 25, Color.RED);
-    Raylib.DrawText(($"I'll deduct a point for the lackluster performance."), 50, 276, 25, Color.RED);
-    Raylib.DrawText(($"[Space] to respawn."), 50, 304, 25, Color.RED);
+        Fighter player = new Fighter();
+        Fighter enemy = new Fighter();
 
-    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-    {
-        GameState = "Labyrinth";
-        points -= 1;
-        playerRect.x = 400;
-        playerRect.y = -300;
+
+
+        if (player.hp > 0 && enemy.hp > 0)
+        {
+            Raylib.DrawText(($"Your health:{player.hp}"), 50, 760, 25, Color.RED);
+            Raylib.DrawText(($"Foe health:{enemy.hp}"), 50, 800, 25, Color.RED);
+
+            if (BattleState == "Menu")
+            {
+                Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 50, 100, 25, Color.RED);
+                Raylib.DrawText(("What is your decison?"), 50, 140, 25, Color.RED);
+                Raylib.DrawText(("[C]arve or [P]uncture"), 50, 180, 25, Color.RED);
+
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
+                {
+                    BattleState = "Carve";
+                }
+                else if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+                {
+                    BattleState = "Puncture";
+                }
+
+                if (BattleState == "Carve")
+                {
+                    accuracy = generator.Next(1, 10);
+                    if (accuracy > 2)
+                    {
+                        AttackType = "CarveHit";
+                        BattleState = "EnemyAttack";
+                        player.LightAttack(enemy);
+                    }
+                    else
+                    {
+                        AttackType = "CarveMiss";
+                        BattleState = "EnemyAttack";
+                    }
+                }
+                else if (BattleState == "Puncture")
+                {
+                    accuracy = generator.Next(1, 10);
+                    if (accuracy > 4)
+                    {
+                        AttackType = "PunctureHit";
+                        BattleState = "EnemyAttack";
+                        player.HeavyAttack(enemy);
+                    }
+                    else
+                    {
+                        AttackType = "PunctureMiss";
+                        BattleState = "EnemyAttack";
+                        player.hp -= 5;
+                    }
+                }
+                if (BattleState == "EnemyAttack")
+                {
+                    enemy.LightAttack(player);
+                    BattleState = "Menu";
+                }
+
+                if (AttackType == "PunctureMiss")
+                {
+                    Raylib.ClearBackground(Color.BLACK);
+                    Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 220, 25, Color.WHITE);
+                    Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 248, 25, Color.WHITE);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                        AttackType = "None";
+                    }
+                }
+                else if (AttackType == "PunctureHit")
+                {
+                    Raylib.ClearBackground(Color.BLACK);
+                    Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 220, 25, Color.WHITE);
+                    Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 248, 25, Color.WHITE);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                        AttackType = "None";
+                    }
+                }
+                else if (AttackType == "CarveMiss")
+                {
+                    Raylib.ClearBackground(Color.BLACK);
+                    Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 220, 25, Color.WHITE);
+                    Raylib.DrawText(($"was lacking and you missed."), 50, 248, 25, Color.WHITE);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                        AttackType = "None";
+                    }
+                }
+                else if (AttackType == "CarveHit")
+                {
+                    Raylib.ClearBackground(Color.BLACK);
+                    Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.WHITE);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                    {
+                        BattleState = "Menu";
+                        AttackType = "None";
+                    }
+                }
+
+            }
+        }
+        else if (enemyhp <= 0)
+        {
+            points += 1;
+            playerhp = 100;
+            enemyhp = 50;
+            Raylib.ClearBackground(Color.BLACK);
+            AttackType = "None";
+            GameState = "Labyrinth";
+            BattleState = "Menu";
+        }
+        else if (playerhp <= 0)
+        {
+            GameState = "Loser";
+        }
     }
-}
-if (GameState == "Victory")
-{
-    Raylib.ClearBackground(Color.BLACK);
-    Raylib.DrawText(("+10 Points!"), 50, 170, 25, Color.WHITE);
-    Raylib.DrawText(("Congratulations, you have showed at least some competence!"), 50, 220, 25, Color.RED);
-    Raylib.DrawText(($"You gained a total of {points} points!"), 50, 248, 25, Color.RED);
-    Raylib.DrawText(($"Uhh, anyway, you'll have to leave, you kinda stink."), 50, 276, 25, Color.RED);
-    Raylib.DrawText(($"[Esc] to exit."), 50, 304, 25, Color.RED);
-}
+    if (GameState == "Loser")
+    {
+        Raylib.ClearBackground(Color.BLACK);
+        Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"I couldn't care less tbh. GG's."), 50, 248, 25, Color.RED);
+        Raylib.DrawText(($"I'll deduct a point for the lackluster performance."), 50, 276, 25, Color.RED);
+        Raylib.DrawText(($"[Space] to respawn."), 50, 304, 25, Color.RED);
+
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        {
+            GameState = "Labyrinth";
+            points -= 1;
+            playerRect.x = 400;
+            playerRect.y = -300;
+        }
+    }
+    if (GameState == "Victory")
+    {
+        Raylib.ClearBackground(Color.BLACK);
+        Raylib.DrawText(("+10 Points!"), 50, 170, 25, Color.WHITE);
+        Raylib.DrawText(("Congratulations, you have showed at least some competence!"), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"You gained a total of {points} points!"), 50, 248, 25, Color.RED);
+        Raylib.DrawText(($"Uhh, anyway, you'll have to leave, you kinda stink."), 50, 276, 25, Color.RED);
+        Raylib.DrawText(($"[Esc] to exit."), 50, 304, 25, Color.RED);
+    }
     Raylib.EndDrawing();
 }
-
 static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
 {
     foreach (Rectangle r in walls)
@@ -588,7 +585,7 @@ static Rectangle CheckCollisions(Rectangle playerRect, List<Rectangle> hitBoxes)
             return j;
         }
     }
-    
+
     foreach (Rectangle rb in hitBoxes)
     {
         if (Raylib.CheckCollisionRecs(playerRect, rb))
