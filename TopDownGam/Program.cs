@@ -9,6 +9,8 @@ using System.Security.Cryptography.X509Certificates;
 Random generator = new Random();
 
 string GameState = "Menu";
+string AttackType = "";
+string BattleState = "Menu";
 
 float GameX = 900;
 float GameY = 900;
@@ -19,10 +21,6 @@ bool Lookies = false;
 
 int framerate = 60;
 
-string AttackType = "";
-
-string BattleState = "Menu";
-
 int waittime = framerate / 3;
 
 Raylib.InitWindow((int)GameX, (int)GameY, "(‿ˠ‿)");
@@ -32,21 +30,16 @@ bool CameraReal = false;
 
 int currentDialogue = 1;
 
-int points = 0;
+Player player1 = new Player();
 
-float speed = 5;
+Fighter player = new Fighter();
+Fighter enemy = new Fighter();
 
-// Combat
-int playerhp = 100;
-int enemyhp = 50;
 int accuracy;
-
-float playerSizeX = 66;
-float playerSizeY = 53;
 
 int tileSize = 200;
 
-Rectangle playerRect = new Rectangle(400, -300, playerSizeY, playerSizeX);
+Rectangle playerRect = new Rectangle(400, -300, player1.SizeY, player1.SizeX);
 
 Camera2D camera = new Camera2D();
 camera.offset = new Vector2(GameX / 2, GameY / 2);
@@ -89,7 +82,6 @@ List<Rectangle> Lookie = new();
 List<Rectangle> Jesu = new();
 
 {
-
     for (int y = 0; y < sceneData.GetLength(0); y++)
     {
         for (int x = 0; x < sceneData.GetLength(1); x++)
@@ -145,14 +137,13 @@ List<Rectangle> Jesu = new();
 
 Texture2D enemyImage = Raylib.LoadTexture("pictures/enemy.png");
 Texture2D collectibleImage = Raylib.LoadTexture("pictures/star.png");
-Texture2D playerRectImage = Raylib.LoadTexture("pictures/cryingchild3.png");
+// Texture2D playerRectImage = Raylib.LoadTexture("pictures/cryingchild3.png");
 Texture2D wallImage = Raylib.LoadTexture("pictures/Bricks.png");
 Texture2D backgroundImage = Raylib.LoadTexture("pictures/Background.png");
 Texture2D goalImage = Raylib.LoadTexture("pictures/goalImage.png");
 Texture2D jesusImage = Raylib.LoadTexture("pictures/JESUS.png");
 Texture2D redbootsImage = Raylib.LoadTexture("pictures/REDBOOTS.png");
 Texture2D lookiesImage = Raylib.LoadTexture("pictures/LOOKIES.png");
-Vector2 movement = Vector2.Zero;
 
 while (!Raylib.WindowShouldClose())
 {
@@ -198,8 +189,9 @@ while (!Raylib.WindowShouldClose())
 
     if (GameState == "Labyrinth")
     {
+        Raylib.DrawText(($"Points:{player1.points}"), 25, 25, 20, Color.YELLOW);
 
-        Rectangle enemiesRect = CheckCollisions(playerRect, enemies);
+        Rectangle enemiesRect = CheckCollisions(player1.playerRect, enemies);
         if (enemiesRect.width != 0)
         {
             GameState = "Battle";
@@ -216,7 +208,7 @@ while (!Raylib.WindowShouldClose())
             }
         }
 
-        Rectangle redBootRect = CheckCollisions(playerRect, redBoot);
+        Rectangle redBootRect = CheckCollisions(player1.playerRect, redBoot);
         if (redBootRect.width != 0)
         {
             redBoots = true;
@@ -232,7 +224,7 @@ while (!Raylib.WindowShouldClose())
                 }
             }
         }
-        Rectangle LookiesRect = CheckCollisions(playerRect, Lookie);
+        Rectangle LookiesRect = CheckCollisions(player1.playerRect, Lookie);
         if (LookiesRect.width != 0)
         {
             Lookies = true;
@@ -248,7 +240,7 @@ while (!Raylib.WindowShouldClose())
                 }
             }
         }
-        Rectangle JesusRect = CheckCollisions(playerRect, Lookie);
+        Rectangle JesusRect = CheckCollisions(player1.playerRect, Lookie);
         if (LookiesRect.width != 0)
         {
             Lookies = true;
@@ -265,10 +257,10 @@ while (!Raylib.WindowShouldClose())
             }
         }
 
-        Rectangle collectibleRect = CheckCollisions(playerRect, collectibles);
+        Rectangle collectibleRect = CheckCollisions(player1.playerRect, collectibles);
         if (collectibleRect.width != 0)
         {
-            points += 3;
+            player1.points += 3;
             collectibles.Remove(collectibleRect);
             for (int y = 0; y < sceneData.GetLength(0); y++)
             {
@@ -282,10 +274,10 @@ while (!Raylib.WindowShouldClose())
             }
         }
 
-        Rectangle victoryRect = CheckCollisions(playerRect, victory);
+        Rectangle victoryRect = CheckCollisions(player1.playerRect, victory);
         if (victoryRect.width != 0)
         {
-            points += 10;
+            player1.points += 10;
             victory.Remove(victoryRect);
             GameState = "Victory";
             for (int y = 0; y < sceneData.GetLength(0); y++)
@@ -300,61 +292,47 @@ while (!Raylib.WindowShouldClose())
             }
         }
 
-        camera.target = new Vector2(playerRect.x + playerSizeX / 2, playerRect.x + playerSizeY / 2);
+        camera.target = new Vector2(player1.playerRect.x + player1.SizeX / 2, player1.playerRect.x + player1.SizeY / 2);
 
-        movement = Vector2.Zero;
+        // movement = Vector2.Zero;
 
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_S) || Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
-        {
-            movement.Y += 1;
-        }
-        else if (Raylib.IsKeyDown(KeyboardKey.KEY_W) || Raylib.IsKeyDown(KeyboardKey.KEY_UP))
-        {
-            movement.Y -= 1;
-        }
+        // if (Raylib.IsKeyDown(KeyboardKey.KEY_S) || Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
+        // {
+        //     movement.Y += 1;
+        // }
+        // else if (Raylib.IsKeyDown(KeyboardKey.KEY_W) || Raylib.IsKeyDown(KeyboardKey.KEY_UP))
+        // {
+        //     movement.Y -= 1;
+        // }
 
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
-        {
-            movement.X += 1;
-        }
-        else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
-        {
-            movement.X -= 1;
-        }
+        // if (Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
+        // {
+        //     movement.X += 1;
+        // }
+        // else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
+        // {
+        //     movement.X -= 1;
+        // }
 
-        if (movement.Length() > 0)
-        {
-            movement = Vector2.Normalize(movement);
-        }
+        // if (movement.Length() > 0)
+        // {
+        //     movement = Vector2.Normalize(movement);
+        // }
 
-        if (redBoots == false)
+        if (redBoots == true)
         {
-            movement *= speed;
-        }
-        else if (redBoots == true)
-        {
-            movement *= speed + 5;
+            player1.movement *= player1.speed + 5;
         }
 
-        playerRect.x += movement.X;
-
-        if (CheckWallCollision(playerRect, walls))
-        {
-            playerRect.x -= movement.X;
-        }
-
-        playerRect.y += movement.Y;
-
-        if (CheckWallCollision(playerRect, walls))
-        {
-            playerRect.y -= movement.Y;
-        }
+        // playerRect.x += player1.movement.X;
+        // playerRect.y += player1.movement.Y;
 
         Raylib.ClearBackground(Color.BLACK);
 
         if (CameraReal == true)
         {
-            camera.target = new Vector2(playerRect.x + playerSizeX / 2, playerRect.y + playerSizeY / 2);
+            // draw outside of beginmode2d to make it not affected, if player moves camera updates before player
+            camera.target = new Vector2(player1.playerRect.x + player1.SizeX / 2, player1.playerRect.y + player1.SizeY / 2);
             Raylib.BeginMode2D(camera);
 
             for (int y = 0; y < sceneData.GetLength(0); y++)
@@ -392,9 +370,9 @@ while (!Raylib.WindowShouldClose())
                 }
             }
 
-            Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
+            // Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
 
-            Raylib.DrawText(($"Points:{points}"), (int)playerRect.x - 350, (int)playerRect.y - 350, 20, Color.YELLOW);
+            player1.Update(walls);
 
             Raylib.EndMode2D();
 
@@ -405,10 +383,7 @@ while (!Raylib.WindowShouldClose())
     {
         var random = new Random();
         Raylib.ClearBackground(Color.BLACK);
-        Fighter player = new Fighter();
-        Fighter enemy = new Fighter();
-
-
+        Raylib.DrawText(($"Points:{player1.points}"), (int)playerRect.x - 350, (int)playerRect.y - 350, 20, Color.YELLOW);
 
         if (player.hp > 0 && enemy.hp > 0)
         {
@@ -430,101 +405,108 @@ while (!Raylib.WindowShouldClose())
                     BattleState = "Puncture";
                 }
 
-                if (BattleState == "Carve")
+            }
+            if (BattleState == "Carve")
+            {
+                accuracy = generator.Next(1, 10);
+                if (accuracy > 2)
                 {
-                    accuracy = generator.Next(1, 10);
-                    if (accuracy > 2)
-                    {
-                        AttackType = "CarveHit";
-                        BattleState = "EnemyAttack";
-                        player.LightAttack(enemy);
-                    }
-                    else
-                    {
-                        AttackType = "CarveMiss";
-                        BattleState = "EnemyAttack";
-                    }
+                    player.LightAttack(enemy);
+                    AttackType = "CarveHit";
+                    BattleState = "EnemyAttack";
                 }
-                else if (BattleState == "Puncture")
+                else
                 {
-                    accuracy = generator.Next(1, 10);
-                    if (accuracy > 4)
-                    {
-                        AttackType = "PunctureHit";
-                        BattleState = "EnemyAttack";
-                        player.HeavyAttack(enemy);
-                    }
-                    else
-                    {
-                        AttackType = "PunctureMiss";
-                        BattleState = "EnemyAttack";
-                        player.hp -= 5;
-                    }
+                    AttackType = "CarveMiss";
+                    BattleState = "EnemyAttack";
                 }
-                if (BattleState == "EnemyAttack")
+            }
+            else if (BattleState == "Puncture")
+            {
+                accuracy = generator.Next(1, 10);
+                if (accuracy > 4)
                 {
-                    enemy.LightAttack(player);
+                    player.HeavyAttack(enemy);
+                    AttackType = "PunctureHit";
+                    BattleState = "EnemyAttack";
+                }
+                else
+                {
+                    AttackType = "PunctureMiss";
+                    BattleState = "EnemyAttack";
+                    player.hp -= 5;
+                }
+            }
+            if (BattleState == "EnemyAttack")
+            {
+                enemy.EnemyAttack(player);
+                BattleState = "WaitMode";
+            }
+            if (BattleState == "WaitMode")
+            {
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                {
                     BattleState = "Menu";
                 }
-
-                if (AttackType == "PunctureMiss")
-                {
-                    Raylib.ClearBackground(Color.BLACK);
-                    Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 220, 25, Color.WHITE);
-                    Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 248, 25, Color.WHITE);
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                        AttackType = "None";
-                    }
-                }
-                else if (AttackType == "PunctureHit")
-                {
-                    Raylib.ClearBackground(Color.BLACK);
-                    Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 220, 25, Color.WHITE);
-                    Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 248, 25, Color.WHITE);
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                        AttackType = "None";
-                    }
-                }
-                else if (AttackType == "CarveMiss")
-                {
-                    Raylib.ClearBackground(Color.BLACK);
-                    Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 220, 25, Color.WHITE);
-                    Raylib.DrawText(($"was lacking and you missed."), 50, 248, 25, Color.WHITE);
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                        AttackType = "None";
-                    }
-                }
-                else if (AttackType == "CarveHit")
-                {
-                    Raylib.ClearBackground(Color.BLACK);
-                    Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.WHITE);
-                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                    {
-                        BattleState = "Menu";
-                        AttackType = "None";
-                    }
-                }
-
+            }
+            if (AttackType == "PunctureMiss")
+            {
+                Raylib.ClearBackground(Color.BLACK);
+                Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 220, 25, Color.WHITE);
+                Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 248, 25, Color.WHITE);
+                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                // {
+                //     BattleState = "Menu";
+                //     AttackType = "None";
+                // }
+            }
+            else if (AttackType == "PunctureHit")
+            {
+                Raylib.ClearBackground(Color.BLACK);
+                Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 220, 25, Color.WHITE);
+                Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 248, 25, Color.WHITE);
+                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                // {
+                //     BattleState = "Menu";
+                //     AttackType = "None";
+                // }
+            }
+            else if (AttackType == "CarveMiss")
+            {
+                Raylib.ClearBackground(Color.BLACK);
+                Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 220, 25, Color.WHITE);
+                Raylib.DrawText(($"was lacking and you missed."), 50, 248, 25, Color.WHITE);
+                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                // {
+                //     BattleState = "Menu";
+                //     AttackType = "None";
+                // }
+            }
+            else if (AttackType == "CarveHit")
+            {
+                Raylib.ClearBackground(Color.BLACK);
+                Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.WHITE);
+                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                // {
+                //     BattleState = "Menu";
+                //     AttackType = "None";
+                // }
             }
         }
-        else if (enemyhp <= 0)
+        else if (enemy.hp <= 0)
         {
-            points += 1;
-            playerhp = 100;
-            enemyhp = 50;
+            player1.points += 1;
+            player.hp = 100;
+            enemy.hp = 100;
             Raylib.ClearBackground(Color.BLACK);
             AttackType = "None";
             GameState = "Labyrinth";
             BattleState = "Menu";
         }
-        else if (playerhp <= 0)
+        else if (player.hp <= 0)
         {
+            player.hp = 100;
+            enemy.hp = 100;
             GameState = "Loser";
         }
     }
@@ -539,7 +521,7 @@ while (!Raylib.WindowShouldClose())
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
             GameState = "Labyrinth";
-            points -= 1;
+            player1.points -= 1;
             playerRect.x = 400;
             playerRect.y = -300;
         }
@@ -549,23 +531,11 @@ while (!Raylib.WindowShouldClose())
         Raylib.ClearBackground(Color.BLACK);
         Raylib.DrawText(("+10 Points!"), 50, 170, 25, Color.WHITE);
         Raylib.DrawText(("Congratulations, you have showed at least some competence!"), 50, 220, 25, Color.RED);
-        Raylib.DrawText(($"You gained a total of {points} points!"), 50, 248, 25, Color.RED);
+        Raylib.DrawText(($"You gained a total of {player1.points} points!"), 50, 248, 25, Color.RED);
         Raylib.DrawText(($"Uhh, anyway, you'll have to leave, you kinda stink."), 50, 276, 25, Color.RED);
         Raylib.DrawText(($"[Esc] to exit."), 50, 304, 25, Color.RED);
     }
     Raylib.EndDrawing();
-}
-static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
-{
-    foreach (Rectangle r in walls)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, r))
-        {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 static Rectangle CheckCollisions(Rectangle playerRect, List<Rectangle> hitBoxes)
