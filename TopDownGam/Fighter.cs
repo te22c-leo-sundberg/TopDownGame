@@ -4,7 +4,7 @@ public class Fighter
     public int LightAtkDmg = 15;
     public int HeavyAtkDmg = 25;
     public int EnemyAtkDmg = 10;
-    public string BattleState = "Menu";
+    public string BattleState = "Menu"; // migrate all combat stuff into this
     public void LightAttack(Fighter target)
     {
         target.hp -= LightAtkDmg;
@@ -17,7 +17,5 @@ public class Fighter
     {
         target.hp -= EnemyAtkDmg;
     }
-
-    public void BattleState();
 
 }

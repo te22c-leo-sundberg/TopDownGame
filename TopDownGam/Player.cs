@@ -5,12 +5,12 @@ using Microsoft.VisualBasic;
 
 public class Player
 {
-    public int SizeX = 66;
-    public int SizeY = 53;
+    public int SizeX = 53;
+    public int SizeY = 66;
     public int speed = 5;
     public int points = 0;
     public Vector2 movement = Vector2.Zero;
-    public Rectangle playerRect = new Rectangle(400, -300, 66, 53);
+    public Rectangle playerRect = new Rectangle(400, -300, 53, 66);
 
     public void Update(List<Rectangle> walls)
     {
@@ -18,15 +18,15 @@ public class Player
         // läs in movement
         UpdateMovementVector();
         // Gör x-movement-grejen
-        
-        if (CheckWallCollision(playerRect, walls))
-        {
-            playerRect.x -= movement.X;
-        }
 
         if (CheckWallCollision(playerRect, walls))
         {
             playerRect.y -= movement.Y;
+        }
+        
+        if (CheckWallCollision(playerRect, walls))
+        {
+            playerRect.x -= movement.X;
         }
 
         static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
