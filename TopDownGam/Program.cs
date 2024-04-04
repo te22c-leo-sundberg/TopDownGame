@@ -35,8 +35,6 @@ Fighter enemy = new Fighter();
 
 int accuracy;
 
-int tileSize = 200;
-
 Rectangle playerRect = new Rectangle(400, -300, player1.SizeY, player1.SizeX);
 
 Camera2D camera = new Camera2D();
@@ -430,16 +428,25 @@ while (!Raylib.WindowShouldClose())
             }
             if (BattleState == "WaitMode")
             {
+                if (AttackType == "CarveHit")
+                {
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 140, 25, Color.WHITE);
+                }
+                else if (AttackType == "PunctureHit" || AttackType == "CarveMiss" || AttackType == "PunctureMiss")
+                {
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
+                }
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
                 {
                     BattleState = "Menu";
+                    Raylib.ClearBackground(Color.BLACK);
                 }
             }
             if (AttackType == "PunctureMiss")
             {
                 Raylib.ClearBackground(Color.BLACK);
-                Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 220, 25, Color.WHITE);
-                Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 248, 25, Color.WHITE);
+                Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 100, 25, Color.WHITE);
+                Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 140, 25, Color.WHITE);
                 // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
                 // {
                 //     BattleState = "Menu";
@@ -449,8 +456,8 @@ while (!Raylib.WindowShouldClose())
             else if (AttackType == "PunctureHit")
             {
                 Raylib.ClearBackground(Color.BLACK);
-                Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 220, 25, Color.WHITE);
-                Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 248, 25, Color.WHITE);
+                Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 100, 25, Color.WHITE);
+                Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 140, 25, Color.WHITE);
                 // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
                 // {
                 //     BattleState = "Menu";
@@ -460,8 +467,8 @@ while (!Raylib.WindowShouldClose())
             else if (AttackType == "CarveMiss")
             {
                 Raylib.ClearBackground(Color.BLACK);
-                Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 220, 25, Color.WHITE);
-                Raylib.DrawText(($"was lacking and you missed."), 50, 248, 25, Color.WHITE);
+                Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 100, 25, Color.WHITE);
+                Raylib.DrawText(($"was lacking and you missed."), 50, 140, 25, Color.WHITE);
                 // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
                 // {
                 //     BattleState = "Menu";
@@ -471,7 +478,7 @@ while (!Raylib.WindowShouldClose())
             else if (AttackType == "CarveHit")
             {
                 Raylib.ClearBackground(Color.BLACK);
-                Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 220, 25, Color.WHITE);
+                Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 100, 25, Color.WHITE);
                 // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
                 // {
                 //     BattleState = "Menu";
@@ -494,6 +501,7 @@ while (!Raylib.WindowShouldClose())
             player.hp = 100;
             enemy.hp = 100;
             player1.GameState = "Loser";
+            BattleState = "Menu";
         }
     }
     if (player1.GameState == "Loser")
