@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Slutprojekt\\TopDownGam\\TopDownGam.csproj": {}
+    "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\SlutprojektTestground\\TopDownGam\\TopDownGam.csproj": {}
   },
   "projects": {
-    "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Slutprojekt\\TopDownGam\\TopDownGam.csproj": {
+    "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\SlutprojektTestground\\TopDownGam\\TopDownGam.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Slutprojekt\\TopDownGam\\TopDownGam.csproj",
+        "projectUniqueName": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\SlutprojektTestground\\TopDownGam\\TopDownGam.csproj",
         "projectName": "TopDownGam",
-        "projectPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Slutprojekt\\TopDownGam\\TopDownGam.csproj",
+        "projectPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\SlutprojektTestground\\TopDownGam\\TopDownGam.csproj",
         "packagesPath": "C:\\Users\\leo.sundberg1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\Slutprojekt\\TopDownGam\\obj\\",
+        "outputPath": "C:\\Users\\leo.sundberg1\\Desktop\\Programming\\SlutprojektTestground\\TopDownGam\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,0 +1,8 @@
+4th of April
+
+Made this on another file cause I was doing big changes and 
+didnt want to fuck up my main code, moved collision logic into 
+Player.cs, as well as generation and texture creation. Because 
+most if ny collision checks involved changing states, adding points
+etc, i moved them to player.cs instead of creating a new one to avoid
+any hassle or whatever. Proud of what i did :3
