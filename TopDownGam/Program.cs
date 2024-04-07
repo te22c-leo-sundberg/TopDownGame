@@ -42,32 +42,32 @@ camera.offset = new Vector2(GameX / 2, GameY / 2);
 camera.rotation = 0.0f;
 camera.zoom = 1.0f;
 
-int[,] sceneData = {
-{1,0,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,0,0,2,0,4,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,1,0,0,0,6,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,0,0,0,0,3,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,0,0,0,0,7,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
-{1,0,0,1,1,1,1,1,1,1,0,0,0,0,2,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,1,1},
-{1,0,1,1,0,0,2,1,0,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-{1,0,1,3,0,1,0,0,0,1,0,0,1,3,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,2,0,1},
-{1,0,1,1,1,1,1,1,0,1,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1},
-{1,0,0,2,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1},
-{1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1,1,0,0,1,1,1,1,0,0,0,0,1},
-{1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,2,0,0,1,0,1,0,1,1,1,1},
-{1,0,0,0,0,0,0,2,0,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1,2,1,0,0,4},
-{1,0,1,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,1,0,1,0,0,4},
-{1,0,1,0,0,3,1,0,0,0,0,0,2,0,1,1,1,2,1,1,3,0,1,1,1,1,1,0,1,0,0,1},
-{1,0,1,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,1,0,0,1},
-{1,0,1,2,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,1,0,0,1,0,0,3,1,2,1,0,0,1},
-{1,0,1,0,1,0,0,0,2,0,1,0,3,1,0,0,1,0,0,1,0,0,1,2,1,1,1,0,1,0,0,1},
-{1,0,1,0,1,0,0,1,0,0,1,1,1,1,0,0,1,0,0,2,0,0,1,0,1,0,0,0,1,0,0,1},
-{1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,0,1},
-{1,0,0,0,0,0,0,1,0,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,1,0,0,2,0,0,0,1},
-{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-};
+// int[,] sceneData = {
+// {1,0,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// {1,0,0,0,2,0,4,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// {1,0,1,0,0,0,6,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// {1,0,0,0,0,0,3,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// {1,0,0,0,0,0,7,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// {1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// {1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,1,0,0,0,0,3,1},
+// {1,0,0,1,1,1,1,1,1,1,0,0,0,0,2,0,0,0,0,1,1,1,1,0,1,1,1,1,1,1,1,1},
+// {1,0,1,1,0,0,2,1,0,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+// {1,0,1,3,0,1,0,0,0,1,0,0,1,3,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,2,0,1},
+// {1,0,1,1,1,1,1,1,0,1,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1},
+// {1,0,0,2,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1},
+// {1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1,1,0,0,1,1,1,1,0,0,0,0,1},
+// {1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,2,0,0,1,0,1,0,1,1,1,1},
+// {1,0,0,0,0,0,0,2,0,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1,2,1,0,0,4},
+// {1,0,1,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,1,0,1,0,0,4},
+// {1,0,1,0,0,3,1,0,0,0,0,0,2,0,1,1,1,2,1,1,3,0,1,1,1,1,1,0,1,0,0,1},
+// {1,0,1,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,1,0,0,1},
+// {1,0,1,2,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,1,0,0,1,0,0,3,1,2,1,0,0,1},
+// {1,0,1,0,1,0,0,0,2,0,1,0,3,1,0,0,1,0,0,1,0,0,1,2,1,1,1,0,1,0,0,1},
+// {1,0,1,0,1,0,0,1,0,0,1,1,1,1,0,0,1,0,0,2,0,0,1,0,1,0,0,0,1,0,0,1},
+// {1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,0,1},
+// {1,0,0,0,0,0,0,1,0,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,1,0,0,2,0,0,0,1},
+// {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// };
 
 List<Rectangle> walls = new();
 List<Rectangle> enemies = new();
@@ -172,9 +172,13 @@ while (!Raylib.WindowShouldClose())
         }
     }
 
-    if (player1.GameState == "Labyrinth")
+    if (player1.GameState == "Labyrinth" || player1.GameState == "Battle")
     {
         Raylib.DrawText(($"Points:{player1.points}"), 25, 25, 20, Color.YELLOW);
+    }
+
+    if (player1.GameState == "Labyrinth")
+    {
 
         player1.CheckCollision(Jesu, Lookie, redBoot, victory, collectibles, enemies, walls);
         // Rectangle enemiesRect = CheckCollisions(player1.playerRect, enemies);
@@ -362,7 +366,7 @@ while (!Raylib.WindowShouldClose())
 
         }
     }
-
+    
     if (player1.GameState == "Battle")
     {
         var random = new Random();
@@ -428,65 +432,45 @@ while (!Raylib.WindowShouldClose())
             }
             if (BattleState == "WaitMode")
             {
-                if (AttackType == "CarveHit")
-                {
-                Raylib.DrawText(("Press [Space] to proceed."), 50, 140, 25, Color.WHITE);
-                }
-                else if (AttackType == "PunctureHit" || AttackType == "CarveMiss" || AttackType == "PunctureMiss")
-                {
-                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
-                }
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                {
-                    BattleState = "Menu";
-                    Raylib.ClearBackground(Color.BLACK);
-                }
-            }
             if (AttackType == "PunctureMiss")
             {
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 100, 25, Color.WHITE);
-                Raylib.DrawText(($"on your toe,dealing 5 damage to yourself."), 50, 140, 25, Color.WHITE);
-                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                // {
-                //     BattleState = "Menu";
-                //     AttackType = "None";
-                // }
+                Raylib.DrawText(($"on your toe, dealing 5 damage to yourself."), 50, 140, 25, Color.WHITE);
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
+
             }
             else if (AttackType == "PunctureHit")
             {
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 100, 25, Color.WHITE);
-                Raylib.DrawText(($"hitting the foe in the heart, dealing heavy damage."), 50, 140, 25, Color.WHITE);
-                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                // {
-                //     BattleState = "Menu";
-                //     AttackType = "None";
-                // }
+                Raylib.DrawText(($"hitting the foe in the heart, dealing {player.HeavyAtkDmg} damage."), 50, 140, 25, Color.WHITE);
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
+
             }
             else if (AttackType == "CarveMiss")
             {
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 100, 25, Color.WHITE);
                 Raylib.DrawText(($"was lacking and you missed."), 50, 140, 25, Color.WHITE);
-                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                // {
-                //     BattleState = "Menu";
-                //     AttackType = "None";
-                // }
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
+
             }
             else if (AttackType == "CarveHit")
             {
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 100, 25, Color.WHITE);
-                // if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-                // {
-                //     BattleState = "Menu";
-                //     AttackType = "None";
-                // }
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 140, 25, Color.WHITE);
+
+            }
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+                {
+                    BattleState = "Menu";
+                    Raylib.ClearBackground(Color.BLACK);
+                }
             }
         }
-        else if (enemy.hp <= 0)
+        else if (enemy.hp <= 0 && BattleState == "")
         {
             player1.points += 1;
             player.hp = 100;
@@ -501,16 +485,16 @@ while (!Raylib.WindowShouldClose())
             player.hp = 100;
             enemy.hp = 100;
             player1.GameState = "Loser";
-            BattleState = "Menu";
+            BattleState = "";
         }
     }
     if (player1.GameState == "Loser")
     {
         Raylib.ClearBackground(Color.BLACK);
-        Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 220, 25, Color.RED);
-        Raylib.DrawText(($"I couldn't care less tbh. GG's."), 50, 248, 25, Color.RED);
-        Raylib.DrawText(($"I'll deduct a point for the lackluster performance."), 50, 276, 25, Color.RED);
-        Raylib.DrawText(($"[Space] to respawn."), 50, 304, 25, Color.RED);
+        Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 100, 25, Color.RED);
+        Raylib.DrawText(($"I couldn't care less tbh. GG's."), 50, 140, 25, Color.RED);
+        Raylib.DrawText(($"I'll deduct a point for the lackluster performance."), 50, 180, 25, Color.RED);
+        Raylib.DrawText(($"[Space] to respawn."), 50, 220, 25, Color.RED);
 
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
