@@ -135,6 +135,8 @@ while (!Raylib.WindowShouldClose())
 
     Raylib.BeginDrawing();
 
+    player1.PointDisplay();
+
     if (player1.GameState == "Menu")
     {
         Raylib.ClearBackground(Color.BLACK);
@@ -170,11 +172,6 @@ while (!Raylib.WindowShouldClose())
             player1.GameState = "Labyrinth";
             CameraReal = true;
         }
-    }
-
-    if (player1.GameState == "Labyrinth" || player1.GameState == "Battle")
-    {
-        Raylib.DrawText(($"Points:{player1.points}"), 25, 25, 20, Color.YELLOW);
     }
 
     if (player1.GameState == "Labyrinth")
@@ -354,7 +351,6 @@ while (!Raylib.WindowShouldClose())
             //         }
             //     }
             // }
-
             player1.Textures();
 
 
@@ -371,9 +367,8 @@ while (!Raylib.WindowShouldClose())
     {
         var random = new Random();
         Raylib.ClearBackground(Color.BLACK);
-        Raylib.DrawText(($"Points:{player1.points}"), (int)playerRect.x - 350, (int)playerRect.y - 350, 20, Color.YELLOW);
 
-        if (player.hp > 0 && enemy.hp > 0)
+        if (player.hp > 0 && enemy.hp > 0 && BattleState != "WaitTime")
         {
             Raylib.DrawText(($"Your health:{player.hp}"), 50, 760, 25, Color.RED);
             Raylib.DrawText(($"Foe health:{enemy.hp}"), 50, 800, 25, Color.RED);
@@ -397,7 +392,7 @@ while (!Raylib.WindowShouldClose())
             if (BattleState == "Carve")
             {
                 accuracy = generator.Next(1, 10);
-                if (accuracy > 2)
+                if (accuracy >= 2)
                 {
                     player.LightAttack(enemy);
                     AttackType = "CarveHit";
@@ -412,7 +407,7 @@ while (!Raylib.WindowShouldClose())
             else if (BattleState == "Puncture")
             {
                 accuracy = generator.Next(1, 10);
-                if (accuracy > 4)
+                if (accuracy >= 4)
                 {
                     player.HeavyAttack(enemy);
                     AttackType = "PunctureHit";
@@ -437,15 +432,18 @@ while (!Raylib.WindowShouldClose())
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You thrust your sword but lack confidence, and drop it"), 50, 100, 25, Color.WHITE);
                 Raylib.DrawText(($"on your toe, dealing 5 damage to yourself."), 50, 140, 25, Color.WHITE);
-                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
-
+                Raylib.DrawText(($"The foe charged recklessly into you with a headbutt,"), 50, 180, 25, Color.WHITE);
+                Raylib.DrawText(($"dealing {enemy.EnemyAtkDmg} damage to you."), 50, 220, 25, Color.WHITE);
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 300, 25, Color.WHITE);
             }
             else if (AttackType == "PunctureHit")
             {
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You thrust your sword into the foe with confidence,"), 50, 100, 25, Color.WHITE);
                 Raylib.DrawText(($"hitting the foe in the heart, dealing {player.HeavyAtkDmg} damage."), 50, 140, 25, Color.WHITE);
-                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
+                Raylib.DrawText(($"The foe charged recklessly into you with a headbutt,"), 50, 180, 25, Color.WHITE);
+                Raylib.DrawText(($"dealing {enemy.EnemyAtkDmg} damage to you."), 50, 220, 25, Color.WHITE);
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 300, 25, Color.WHITE);
 
             }
             else if (AttackType == "CarveMiss")
@@ -453,14 +451,18 @@ while (!Raylib.WindowShouldClose())
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You swing your sword, but your confidence"), 50, 100, 25, Color.WHITE);
                 Raylib.DrawText(($"was lacking and you missed."), 50, 140, 25, Color.WHITE);
-                Raylib.DrawText(("Press [Space] to proceed."), 50, 180, 25, Color.WHITE);
+                Raylib.DrawText(($"The foe charged recklessly into you with a headbutt,"), 50, 180, 25, Color.WHITE);
+                Raylib.DrawText(($"dealing {enemy.EnemyAtkDmg} damage to you."), 50, 220, 25, Color.WHITE);
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 300, 25, Color.WHITE);
 
             }
             else if (AttackType == "CarveHit")
             {
                 Raylib.ClearBackground(Color.BLACK);
                 Raylib.DrawText(($"You swing your sword confidently, dealing moderate damage."), 50, 100, 25, Color.WHITE);
-                Raylib.DrawText(("Press [Space] to proceed."), 50, 140, 25, Color.WHITE);
+                Raylib.DrawText(($"The foe charged recklessly into you with a headbutt,"), 50, 140, 25, Color.WHITE);
+                Raylib.DrawText(($"dealing {enemy.EnemyAtkDmg} damage to you."), 50, 180, 25, Color.WHITE);
+                Raylib.DrawText(("Press [Space] to proceed."), 50, 260, 25, Color.WHITE);
 
             }
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
@@ -470,31 +472,46 @@ while (!Raylib.WindowShouldClose())
                 }
             }
         }
-        else if (enemy.hp <= 0 && BattleState == "")
+        else if (enemy.hp <= 0)
         {
-            player1.points += 1;
+
+            player1.GameState = "FightWon";
             player.hp = 100;
             enemy.hp = 100;
-            Raylib.ClearBackground(Color.BLACK);
             AttackType = "None";
-            player1.GameState = "Labyrinth";
             BattleState = "Menu";
         }
         else if (player.hp <= 0)
         {
             player.hp = 100;
             enemy.hp = 100;
-            player1.GameState = "Loser";
-            BattleState = "";
+            player1.GameState = "FightLost";
+            AttackType = "None";
+            BattleState = "Menu";
         }
     }
-    if (player1.GameState == "Loser")
+    if (player1.GameState == "FightWon")
+    {
+        Raylib.ClearBackground(Color.BLACK);
+        Raylib.DrawText(("You bested the foe through your courage and sheer will,"), 50, 100, 25, Color.RED);
+        Raylib.DrawText(($"slashing its body in half, exposing a morbid mess of guts"), 50, 140, 25, Color.RED);
+        Raylib.DrawText(($"and blue blood. Through the foes death, you replenished"), 50, 180, 25, Color.RED);
+        Raylib.DrawText(($"your lost vitality and gained 1 point!"), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"[Space] to return."), 50, 260, 25, Color.WHITE);
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        {
+            player1.GameState = "Labyrinth";
+            player1.points += 1;
+        }
+    }
+    if (player1.GameState == "FightLost")
     {
         Raylib.ClearBackground(Color.BLACK);
         Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 100, 25, Color.RED);
-        Raylib.DrawText(($"I couldn't care less tbh. GG's."), 50, 140, 25, Color.RED);
-        Raylib.DrawText(($"I'll deduct a point for the lackluster performance."), 50, 180, 25, Color.RED);
-        Raylib.DrawText(($"[Space] to respawn."), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"I couldn't care less tbh, but to save you some trouble"), 50, 140, 25, Color.RED);
+        Raylib.DrawText(($"I'll kill the foe you lost to. That will cost one point."), 50, 180, 25, Color.RED);
+        Raylib.DrawText(($"Oh, and you can't say no, so be happy, ungrateful swine."), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"[Space] to respawn."), 50, 260, 25, Color.WHITE);
 
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
@@ -511,7 +528,7 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText(("Congratulations, you have showed at least some competence!"), 50, 220, 25, Color.RED);
         Raylib.DrawText(($"You gained a total of {player1.points} points!"), 50, 248, 25, Color.RED);
         Raylib.DrawText(($"Uhh, anyway, you'll have to leave, you kinda stink."), 50, 276, 25, Color.RED);
-        Raylib.DrawText(($"[Esc] to exit."), 50, 304, 25, Color.RED);
+        Raylib.DrawText(($"[Esc] to exit."), 50, 304, 25, Color.WHITE);
     }
     Raylib.EndDrawing();
 }

@@ -17,6 +17,7 @@ public Boolean redBoots = false;
 public string GameState = "Menu";
 public int tileSize = 200;
 public Texture2D enemyImage = Raylib.LoadTexture("pictures/enemy.png");
+public Texture2D enemyGutsImage = Raylib.LoadTexture("pictures/enemyguts.png");
 public Texture2D collectibleImage = Raylib.LoadTexture("pictures/star.png");
 public Texture2D wallImage = Raylib.LoadTexture("pictures/Bricks.png");
 public Texture2D backgroundImage = Raylib.LoadTexture("pictures/Background.png");
@@ -50,6 +51,14 @@ public int[,] sceneData = {
 {1,0,0,0,0,0,0,1,0,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,1,0,0,2,0,0,0,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 };
+public void PointDisplay()
+{
+    if (GameState == "Labyrinth" || GameState == "Battle")
+    {
+        Raylib.DrawText(($"Points:{points}"), 25, 25, 20, Color.YELLOW);
+    }
+
+}
 
 public void Generation(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
 {
@@ -140,6 +149,10 @@ public void Textures()
                     {
                         Raylib.DrawTexture(jesusImage, x * tileSize, y * tileSize, Color.WHITE);
                     }
+                    if (sceneData[y, x] == 8)
+                    {
+                        Raylib.DrawTexture(enemyGutsImage, x * tileSize, y * tileSize, Color.WHITE);
+                    }
                 }
             }
 }
@@ -204,16 +217,16 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
         {
             GameState = "Battle";
             enemies.Remove(enemiesRect);
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
+            // for (int y = 0; y < sceneData.GetLength(0); y++)
+            // {
+            //     for (int x = 0; x < sceneData.GetLength(1); x++)
+            //     {
                     if (sceneData[(int)enemiesRect.y / tileSize, (int)enemiesRect.x / tileSize] == 2)
                     {
-                        sceneData[(int)enemiesRect.y / tileSize, (int)enemiesRect.x / tileSize] = 0;
+                        sceneData[(int)enemiesRect.y / tileSize, (int)enemiesRect.x / tileSize] = 8;
                     }
-                }
-            }
+            //     }
+            // }
         }
 
         Rectangle redBootRect = CheckCollisions(playerRect, redBoot);
@@ -221,48 +234,48 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
         {
             redBoots = true;
             redBoot.Remove(redBootRect);
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
+            // for (int y = 0; y < sceneData.GetLength(0); y++)
+            // {
+            //     for (int x = 0; x < sceneData.GetLength(1); x++)
+            //     {
                     if (sceneData[(int)redBootRect.y / tileSize, (int)redBootRect.x / tileSize] == 5)
                     {
                         sceneData[(int)redBootRect.y / tileSize, (int)redBootRect.x / tileSize] = 0;
                     }
-                }
-            }
+            //     }
+            // }
         }
         Rectangle LookiesRect = CheckCollisions(playerRect, Lookie);
         if (LookiesRect.width != 0)
         {
             Lookies = true;
             Lookie.Remove(LookiesRect);
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
+            // for (int y = 0; y < sceneData.GetLength(0); y++)
+            // {
+            //     for (int x = 0; x < sceneData.GetLength(1); x++)
+            //     {
                     if (sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] == 5)
                     {
                         sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] = 0;
                     }
-                }
-            }
+            //     }
+            // }
         }
         Rectangle JesusRect = CheckCollisions(playerRect, Lookie);
         if (LookiesRect.width != 0)
         {
             Lookies = true;
             Lookie.Remove(LookiesRect);
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
+            // for (int y = 0; y < sceneData.GetLength(0); y++)
+            // {
+            //     for (int x = 0; x < sceneData.GetLength(1); x++)
+            //     {
                     if (sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] == 5)
                     {
                         sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] = 0;
                     }
-                }
-            }
+            //     }
+            // }
         }
 
         Rectangle collectibleRect = CheckCollisions(playerRect, collectibles);
@@ -270,16 +283,16 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
         {
             points += 3;
             collectibles.Remove(collectibleRect);
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
+            // for (int y = 0; y < sceneData.GetLength(0); y++)
+            // {
+            //     for (int x = 0; x < sceneData.GetLength(1); x++)
+            //     {
                     if (sceneData[(int)collectibleRect.y / tileSize, (int)collectibleRect.x / tileSize] == 3)
                     {
                         sceneData[(int)collectibleRect.y / tileSize, (int)collectibleRect.x / tileSize] = 0;
                     }
-                }
-            }
+            //     }
+            // }
         }
 
         Rectangle victoryRect = CheckCollisions(playerRect, victory);
@@ -288,16 +301,16 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
             points += 10;
             victory.Remove(victoryRect);
             GameState = "Victory";
-            for (int y = 0; y < sceneData.GetLength(0); y++)
-            {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
+            // for (int y = 0; y < sceneData.GetLength(0); y++)
+            // {
+            //     for (int x = 0; x < sceneData.GetLength(1); x++)
+            //     {
                     if (sceneData[(int)victoryRect.y / tileSize, (int)victoryRect.x / tileSize] == 4)
                     {
                         sceneData[(int)victoryRect.y / tileSize, (int)victoryRect.x / tileSize] = 0;
                     }
-                }
-            }
+            //     }
+            // }
         }
 }
 
