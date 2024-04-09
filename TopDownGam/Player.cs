@@ -10,12 +10,15 @@ public int SizeX = 53;
 public int SizeY = 66;
 public int speed = 5;
 public int points = 0;
+public int tileSize = 200;
+public int lookiesAccuracy = 1;
+public int accuracy;
 public Vector2 movement = Vector2.Zero;
 public Rectangle playerRect = new Rectangle(400, -300, 53, 66);
 public Boolean Lookies = false;
+public Boolean Jesus = false;
 public Boolean redBoots = false;
 public string GameState = "Menu";
-public int tileSize = 200;
 public Texture2D enemyImage = Raylib.LoadTexture("pictures/enemy.png");
 public Texture2D enemyGutsImage = Raylib.LoadTexture("pictures/enemyguts.png");
 public Texture2D collectibleImage = Raylib.LoadTexture("pictures/star.png");
@@ -49,17 +52,41 @@ public int[,] sceneData = {
 {1,0,1,0,1,0,0,1,0,0,1,1,1,1,0,0,1,0,0,2,0,0,1,0,1,0,0,0,1,0,0,1},
 {1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,0,1},
 {1,0,0,0,0,0,0,1,0,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,1,0,0,2,0,0,0,1},
-{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-};
-public void PointDisplay()
+{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},};
+// Decided on using an array for the map as I wanted to be able to easily tamper with it to change the layout
+public void StatDisplay()
 {
     if (GameState == "Labyrinth" || GameState == "Battle")
     {
-        Raylib.DrawText(($"Points:{points}"), 25, 25, 20, Color.YELLOW);
+        Raylib.DrawText(($"Points:{points}"), 400, 750, 20, Color.YELLOW);
+        Raylib.DrawText(($"Accuracy:{accuracy}"), 400, 780, 20, Color.GREEN);
+        if (Jesus == true)
+        {
+            Raylib.DrawText(($"Jesus = True"), 400, 810, 20, Color.GOLD );
+        }
+        else
+        {
+            Raylib.DrawText(($"Jesus = False"), 400, 810, 20, Color.GOLD);
+        }
+        if (Lookies == true)
+        {
+            Raylib.DrawText(($"Lookies = True"), 400, 840, 20, Color.SKYBLUE);
+        }
+        else
+        {
+            Raylib.DrawText(($"Lookies = False"), 400, 840, 20, Color.SKYBLUE);
+        }
+        if (redBoots == true)
+        {
+            Raylib.DrawText(($"Red Boots = True"), 400, 870, 20, Color.RED);
+        }
+        else
+        {
+            Raylib.DrawText(($"Red Boots = False"), 400, 870, 20, Color.RED);
+        }
     }
 
 }
-
 public void Generation(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
 {
 
@@ -215,7 +242,14 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
     Rectangle enemiesRect = CheckCollisions(playerRect, enemies);
         if (enemiesRect.width != 0)
         {
-            GameState = "Battle";
+            if (Jesus == false)
+            {
+                GameState = "Battle";
+            }
+            else
+            {
+                points += 1;
+            }
             enemies.Remove(enemiesRect);
             // for (int y = 0; y < sceneData.GetLength(0); y++)
             // {
@@ -245,34 +279,34 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
             //     }
             // }
         }
-        Rectangle LookiesRect = CheckCollisions(playerRect, Lookie);
-        if (LookiesRect.width != 0)
+        Rectangle LookieRect = CheckCollisions(playerRect, Lookie);
+        if (LookieRect.width != 0)
         {
             Lookies = true;
-            Lookie.Remove(LookiesRect);
+            Lookie.Remove(LookieRect);
             // for (int y = 0; y < sceneData.GetLength(0); y++)
             // {
             //     for (int x = 0; x < sceneData.GetLength(1); x++)
             //     {
-                    if (sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] == 5)
+                    if (sceneData[(int)LookieRect.y / tileSize, (int)LookieRect.x / tileSize] == 6)
                     {
-                        sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] = 0;
+                        sceneData[(int)LookieRect.y / tileSize, (int)LookieRect.x / tileSize] = 0;
                     }
             //     }
             // }
         }
-        Rectangle JesusRect = CheckCollisions(playerRect, Lookie);
-        if (LookiesRect.width != 0)
+        Rectangle JesuRect = CheckCollisions(playerRect, Jesu);
+        if (JesuRect.width != 0)
         {
-            Lookies = true;
-            Lookie.Remove(LookiesRect);
+            Jesus = true;
+            Jesu.Remove(JesuRect);
             // for (int y = 0; y < sceneData.GetLength(0); y++)
             // {
             //     for (int x = 0; x < sceneData.GetLength(1); x++)
             //     {
-                    if (sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] == 5)
+                    if (sceneData[(int)JesuRect.y / tileSize, (int)JesuRect.x / tileSize] == 7)
                     {
-                        sceneData[(int)LookiesRect.y / tileSize, (int)LookiesRect.x / tileSize] = 0;
+                        sceneData[(int)JesuRect.y / tileSize, (int)JesuRect.x / tileSize] = 0;
                     }
             //     }
             // }
@@ -347,7 +381,7 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
         {
             movement.X -= 1;
         }
-        
+                
         if (movement.Length() > 0)
         {
             movement = Vector2.Normalize(movement);
@@ -362,8 +396,9 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
             movement *= speed + 5;
         }
 
-        playerRect.x += movement.X;
         playerRect.y += movement.Y;
+        playerRect.x += movement.X;
+    
 
         static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
         {
@@ -382,7 +417,6 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
         {
             playerRect.x -= movement.X;
         }
-
         if (CheckWallCollision(playerRect, walls))
         {
             playerRect.y -= movement.Y;
@@ -390,6 +424,39 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
 
     }
 
+public void FightResult(Player player1)
+{
+        if (player1.GameState == "FightWon")
+    {
+        Raylib.ClearBackground(Color.BLACK);
+        Raylib.DrawText(("You bested the foe through your courage and sheer will,"), 50, 100, 25, Color.RED);
+        Raylib.DrawText(($"slashing its body in half, exposing a morbid mess of guts"), 50, 140, 25, Color.RED);
+        Raylib.DrawText(($"and blue blood. Through the foes death, you replenished"), 50, 180, 25, Color.RED);
+        Raylib.DrawText(($"your lost vitality and gained 1 point!"), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"[Space] to return."), 50, 260, 25, Color.WHITE);
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        {
+            player1.GameState = "Labyrinth";
+            player1.points += 1;
+        }
+    }
+    if (player1.GameState == "FightLost")
+    {
+        Raylib.ClearBackground(Color.BLACK);
+        Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 100, 25, Color.RED);
+        Raylib.DrawText(($"I couldn't care less tbh, but to save you some trouble"), 50, 140, 25, Color.RED);
+        Raylib.DrawText(($"I'll kill the foe you lost to. That will cost one point."), 50, 180, 25, Color.RED);
+        Raylib.DrawText(($"Oh, and you can't say no, so be happy, ungrateful swine."), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"[Space] to respawn."), 50, 260, 25, Color.WHITE);
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        {
+            player1.GameState = "Labyrinth";
+            player1.points -= 1;
+            player1.playerRect.x = 400;
+            player1.playerRect.y = -300;
+        }
+    }
+}
     public void Draw()
     {
         Texture2D playerRectImage = Raylib.LoadTexture("pictures/cryingchild3.png");
