@@ -6,29 +6,29 @@ using System.Security.Cryptography.X509Certificates;
 
 public class Player
 {
-public int SizeX = 53;
-public int SizeY = 66;
-public int speed = 5;
-public int points = 0;
-public int tileSize = 200;
-public int lookiesAccuracy = 1;
-public int accuracy;
-public Vector2 movement = Vector2.Zero;
-public Rectangle playerRect = new Rectangle(400, -300, 53, 66);
-public Boolean Lookies = false;
-public Boolean Jesus = false;
-public Boolean redBoots = false;
-public string GameState = "Menu";
-public Texture2D enemyImage = Raylib.LoadTexture("pictures/enemy.png");
-public Texture2D enemyGutsImage = Raylib.LoadTexture("pictures/enemyguts.png");
-public Texture2D collectibleImage = Raylib.LoadTexture("pictures/star.png");
-public Texture2D wallImage = Raylib.LoadTexture("pictures/Bricks.png");
-public Texture2D backgroundImage = Raylib.LoadTexture("pictures/Background.png");
-public Texture2D goalImage = Raylib.LoadTexture("pictures/goalImage.png");
-public Texture2D jesusImage = Raylib.LoadTexture("pictures/JESUS.png");
-public Texture2D redbootsImage = Raylib.LoadTexture("pictures/REDBOOTS.png");
-public Texture2D lookiesImage = Raylib.LoadTexture("pictures/LOOKIES.png");
-public int[,] sceneData = {
+    public int SizeX = 53;
+    public int SizeY = 66;
+    public int Speed = 5;
+    public int Points = 0;
+    public int TileSize = 200;
+    public int LookiesAccuracy = 1;
+    public int Accuracy;
+    public Vector2 movement = Vector2.Zero;
+    public Rectangle playerRect = new Rectangle(400, -300, 53, 66);
+    public Boolean Lookies = false;
+    public Boolean Jesus = false;
+    public Boolean RedBoots = false;
+    public string GameState = "Menu";
+    public Texture2D enemyImage = Raylib.LoadTexture("pictures/enemy.png");
+    public Texture2D enemyGutsImage = Raylib.LoadTexture("pictures/enemyguts.png");
+    public Texture2D collectibleImage = Raylib.LoadTexture("pictures/star.png");
+    public Texture2D wallImage = Raylib.LoadTexture("pictures/Bricks.png");
+    public Texture2D backgroundImage = Raylib.LoadTexture("pictures/Background.png");
+    public Texture2D goalImage = Raylib.LoadTexture("pictures/goalImage.png");
+    public Texture2D jesusImage = Raylib.LoadTexture("pictures/JESUS.png");
+    public Texture2D redbootsImage = Raylib.LoadTexture("pictures/REDBOOTS.png");
+    public Texture2D lookiesImage = Raylib.LoadTexture("pictures/LOOKIES.png");
+    public int[,] sceneData = { //draws a map of numbers
 {1,0,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 {1,0,0,0,2,0,4,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 {1,0,1,0,0,0,6,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -53,310 +53,174 @@ public int[,] sceneData = {
 {1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,0,1},
 {1,0,0,0,0,0,0,1,0,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,1,0,0,2,0,0,0,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},};
-// Decided on using an array for the map as I wanted to be able to easily tamper with it to change the layout
-public void StatDisplay()
-{
-    if (GameState == "Labyrinth" || GameState == "Battle")
+    // Decided on using an array for the map as I wanted to be able to easily tamper with it to change the layout
+
+    public void StatDisplay()
     {
-        Raylib.DrawText(($"Points:{points}"), 400, 750, 20, Color.YELLOW);
-        Raylib.DrawText(($"Accuracy:{accuracy}"), 400, 780, 20, Color.GREEN);
-        if (Jesus == true)
+        if (GameState == "Labyrinth" || GameState == "Battle")
         {
-            Raylib.DrawText(($"Jesus = True"), 400, 810, 20, Color.GOLD );
+            Raylib.DrawText(($"Points:{Points}"), 400, 750, 20, Color.YELLOW);
+            Raylib.DrawText(($"Accuracy:{Accuracy}"), 400, 780, 20, Color.GREEN);
+            if (Jesus == true)
+            {
+                Raylib.DrawText(($"Jesus = True"), 400, 810, 20, Color.GOLD);
+            }
+            else
+            {
+                Raylib.DrawText(($"Jesus = False"), 400, 810, 20, Color.GOLD);
+            }
+            if (Lookies == true)
+            {
+                Raylib.DrawText(($"Lookies = True"), 400, 840, 20, Color.SKYBLUE);
+            }
+            else
+            {
+                Raylib.DrawText(($"Lookies = False"), 400, 840, 20, Color.SKYBLUE);
+            }
+            if (RedBoots == true)
+            {
+                Raylib.DrawText(($"Red Boots = True"), 400, 870, 20, Color.RED);
+            }
+            else
+            {
+                Raylib.DrawText(($"Red Boots = False"), 400, 870, 20, Color.RED);
+            }
         }
-        else
-        {
-            Raylib.DrawText(($"Jesus = False"), 400, 810, 20, Color.GOLD);
-        }
-        if (Lookies == true)
-        {
-            Raylib.DrawText(($"Lookies = True"), 400, 840, 20, Color.SKYBLUE);
-        }
-        else
-        {
-            Raylib.DrawText(($"Lookies = False"), 400, 840, 20, Color.SKYBLUE);
-        }
-        if (redBoots == true)
-        {
-            Raylib.DrawText(($"Red Boots = True"), 400, 870, 20, Color.RED);
-        }
-        else
-        {
-            Raylib.DrawText(($"Red Boots = False"), 400, 870, 20, Color.RED);
-        }
+
     }
+    public void Generation(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
+    {//based on the numbers on sceneData array, creates rectangle the size of tilesize to make them all the same and easily changable, then adds them to their list
 
-}
-public void Generation(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
-{
-
-    for (int y = 0; y < sceneData.GetLength(0); y++)
-    {
-        for (int x = 0; x < sceneData.GetLength(1); x++)
-        {
-            if (sceneData[y, x] == 1)
-            {
-                Rectangle r = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-                walls.Add(r);
-
-            }
-            if (sceneData[y, x] == 2)
-            {
-
-                Rectangle e = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-                enemies.Add(e);
-
-            }
-            if (sceneData[y, x] == 3)
-            {
-
-                Rectangle c = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-                collectibles.Add(c);
-
-            }
-            if (sceneData[y, x] == 4)
-            {
-                Rectangle v = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-                victory.Add(v);
-
-            }
-            if (sceneData[y, x] == 5)
-            {
-                Rectangle rb = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-                redBoot.Add(rb);
-
-            }
-            if (sceneData[y, x] == 6)
-            {
-                Rectangle l = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-                Lookie.Add(l);
-
-            }
-            if (sceneData[y, x] == 7)
-            {
-                Rectangle j = new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize);
-                Jesu.Add(j);
-
-            }
-        }
-    }
-}
-
-public void Textures()
-{
         for (int y = 0; y < sceneData.GetLength(0); y++)
+        {
+            for (int x = 0; x < sceneData.GetLength(1); x++)
             {
-                for (int x = 0; x < sceneData.GetLength(1); x++)
-                {
-                    if (sceneData[y, x] == 1)
-                    {
-                        Raylib.DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, Color.DARKGRAY);
-                    }
-                    if (sceneData[y, x] == 2)
-                    {
-                        Raylib.DrawTexture(enemyImage, x * tileSize, y * tileSize, Color.WHITE);
-                    }
-                    if (sceneData[y, x] == 3)
-                    {
-                        Raylib.DrawTexture(collectibleImage, x * tileSize, y * tileSize, Color.WHITE);
-                    }
-                    if (sceneData[y, x] == 4)
-                    {
-                        Raylib.DrawTexture(goalImage, x * tileSize, y * tileSize, Color.WHITE);
-                    }
-                    if (sceneData[y, x] == 5)
-                    {
-                        Raylib.DrawTexture(redbootsImage, x * tileSize, y * tileSize, Color.WHITE);
-                    }
-                    if (sceneData[y, x] == 6)
-                    {
-                        Raylib.DrawTexture(lookiesImage, x * tileSize, y * tileSize, Color.WHITE);
-                    }
-                    if (sceneData[y, x] == 7)
-                    {
-                        Raylib.DrawTexture(jesusImage, x * tileSize, y * tileSize, Color.WHITE);
-                    }
-                    if (sceneData[y, x] == 8)
-                    {
-                        Raylib.DrawTexture(enemyGutsImage, x * tileSize, y * tileSize, Color.WHITE);
-                    }
+                Rectangle r = new Rectangle(x * TileSize, y * TileSize, TileSize, TileSize);
+
+                if (sceneData[y, x] == 1) walls.Add(r);
+                if (sceneData[y, x] == 2) enemies.Add(r);
+                if (sceneData[y, x] == 3) collectibles.Add(r);
+                if (sceneData[y, x] == 4) victory.Add(r);
+                if (sceneData[y, x] == 5) redBoot.Add(r);
+                if (sceneData[y, x] == 6) Lookie.Add(r);
+                if (sceneData[y, x] == 7) Jesu.Add(r);
                 }
             }
-}
+        }
 
-public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
-{
+    public void Textures()
+    {
+        for (int y = 0; y < sceneData.GetLength(0); y++)
+        {
+            for (int x = 0; x < sceneData.GetLength(1); x++)
+            {
+        //loads a texture based on the number in the sceneData array, its size being tile size
+                if (sceneData[y, x] == 1) {Raylib.DrawRectangle(x * TileSize, y * TileSize, TileSize, TileSize, Color.DARKGRAY);}
+                if (sceneData[y, x] == 2) {Raylib.DrawTexture(enemyImage, x * TileSize, y * TileSize, Color.WHITE);}
+                if (sceneData[y, x] == 3) {Raylib.DrawTexture(collectibleImage, x * TileSize, y * TileSize, Color.WHITE);}
+                if (sceneData[y, x] == 4) {Raylib.DrawTexture(goalImage, x * TileSize, y * TileSize, Color.WHITE);}
+                if (sceneData[y, x] == 5) {Raylib.DrawTexture(redbootsImage, x * TileSize, y * TileSize, Color.WHITE);}
+                if (sceneData[y, x] == 6) {Raylib.DrawTexture(lookiesImage, x * TileSize, y * TileSize, Color.WHITE);}
+                if (sceneData[y, x] == 7) {Raylib.DrawTexture(jesusImage, x * TileSize, y * TileSize, Color.WHITE);}
+                if (sceneData[y, x] == 8) {Raylib.DrawTexture(enemyGutsImage, x * TileSize, y * TileSize, Color.WHITE);}
+            }
+        }
+    }
     static Rectangle CheckCollisions(Rectangle playerRect, List<Rectangle> hitBoxes)
-{
-    foreach (Rectangle l in hitBoxes)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, l))
+    {//checks collision between playerRect and rectangle r, if playerRect and r are colliding, returns r, otherwise, returns a new rectangle
+        foreach (Rectangle r in hitBoxes)
         {
-            return l;
+            if (Raylib.CheckCollisionRecs(playerRect, r))
+            {
+                return r;
+            }
         }
+
+        return new Rectangle();
     }
 
-    foreach (Rectangle j in hitBoxes)
+    public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
     {
-        if (Raylib.CheckCollisionRecs(playerRect, j))
-        {
-            return j;
-        }
-    }
 
-    foreach (Rectangle rb in hitBoxes)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, rb))
+        Rectangle enemiesRect = CheckCollisions(playerRect, enemies); // creates a rectangle where playerRect and rectangle r overlap
+        if (enemiesRect.width != 0)//if this is greater than 0, aka not equal to 0, runs the code below
         {
-            return rb;
-        }
-    }
-
-    foreach (Rectangle v in hitBoxes)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, v))
-        {
-            return v;
-        }
-    }
-
-    foreach (Rectangle c in hitBoxes)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, c))
-        {
-            return c;
-        }
-    }
-
-    foreach (Rectangle e in hitBoxes)
-    {
-        if (Raylib.CheckCollisionRecs(playerRect, e))
-        {
-            return e;
-        }
-    }
-
-    return new Rectangle();
-}
-
-    Rectangle enemiesRect = CheckCollisions(playerRect, enemies);
-        if (enemiesRect.width != 0)
-        {
-            if (Jesus == false)
+            if (Jesus == false) //checks if jesus is true, cause if it is, you will one shot the demon and instantly get a point, otherwise, puts your game state to battle
             {
                 GameState = "Battle";
             }
             else
             {
-                points += 1;
+                Points += 1;
             }
-            enemies.Remove(enemiesRect);
-            // for (int y = 0; y < sceneData.GetLength(0); y++)
-            // {
-            //     for (int x = 0; x < sceneData.GetLength(1); x++)
-            //     {
-                    if (sceneData[(int)enemiesRect.y / tileSize, (int)enemiesRect.x / tileSize] == 2)
-                    {
-                        sceneData[(int)enemiesRect.y / tileSize, (int)enemiesRect.x / tileSize] = 8;
-                    }
-            //     }
-            // }
+            enemies.Remove(enemiesRect); //the enemiesRect is then removed, and below i check if the coordinates divided by tilesize will be a 2 on the array, and if it is, i change it to 8, which loads a guts texture
+            if (sceneData[(int)enemiesRect.y / TileSize, (int)enemiesRect.x / TileSize] == 2)
+            {
+                sceneData[(int)enemiesRect.y / TileSize, (int)enemiesRect.x / TileSize] = 8;
+            }
         }
 
-        Rectangle redBootRect = CheckCollisions(playerRect, redBoot);
+        Rectangle redBootRect = CheckCollisions(playerRect, redBoot); //does the same thing as it did with enemiesRect
         if (redBootRect.width != 0)
         {
-            redBoots = true;
-            redBoot.Remove(redBootRect);
-            // for (int y = 0; y < sceneData.GetLength(0); y++)
-            // {
-            //     for (int x = 0; x < sceneData.GetLength(1); x++)
-            //     {
-                    if (sceneData[(int)redBootRect.y / tileSize, (int)redBootRect.x / tileSize] == 5)
-                    {
-                        sceneData[(int)redBootRect.y / tileSize, (int)redBootRect.x / tileSize] = 0;
-                    }
-            //     }
-            // }
+            RedBoots = true; // enables red boots which boosts speed
+            redBoot.Remove(redBootRect);//i will only mention the different things that happen in these
+            if (sceneData[(int)redBootRect.y / TileSize, (int)redBootRect.x / TileSize] == 5) //gets the sceneData array number and changes it to nothing
+            {
+                sceneData[(int)redBootRect.y / TileSize, (int)redBootRect.x / TileSize] = 0;
+            }
         }
         Rectangle LookieRect = CheckCollisions(playerRect, Lookie);
         if (LookieRect.width != 0)
         {
-            Lookies = true;
+            Lookies = true; //enables lookies
             Lookie.Remove(LookieRect);
-            // for (int y = 0; y < sceneData.GetLength(0); y++)
-            // {
-            //     for (int x = 0; x < sceneData.GetLength(1); x++)
-            //     {
-                    if (sceneData[(int)LookieRect.y / tileSize, (int)LookieRect.x / tileSize] == 6)
-                    {
-                        sceneData[(int)LookieRect.y / tileSize, (int)LookieRect.x / tileSize] = 0;
-                    }
-            //     }
-            // }
+            if (sceneData[(int)LookieRect.y / TileSize, (int)LookieRect.x / TileSize] == 6)
+            {
+                sceneData[(int)LookieRect.y / TileSize, (int)LookieRect.x / TileSize] = 0;
+            }
         }
         Rectangle JesuRect = CheckCollisions(playerRect, Jesu);
         if (JesuRect.width != 0)
         {
-            Jesus = true;
+            Jesus = true; //enables jesus
             Jesu.Remove(JesuRect);
-            // for (int y = 0; y < sceneData.GetLength(0); y++)
-            // {
-            //     for (int x = 0; x < sceneData.GetLength(1); x++)
-            //     {
-                    if (sceneData[(int)JesuRect.y / tileSize, (int)JesuRect.x / tileSize] == 7)
-                    {
-                        sceneData[(int)JesuRect.y / tileSize, (int)JesuRect.x / tileSize] = 0;
-                    }
-            //     }
-            // }
+            if (sceneData[(int)JesuRect.y / TileSize, (int)JesuRect.x / TileSize] == 7)
+            {
+                sceneData[(int)JesuRect.y / TileSize, (int)JesuRect.x / TileSize] = 0;
+            }
         }
 
         Rectangle collectibleRect = CheckCollisions(playerRect, collectibles);
         if (collectibleRect.width != 0)
         {
-            points += 3;
+            Points += 3; //3 points added
             collectibles.Remove(collectibleRect);
-            // for (int y = 0; y < sceneData.GetLength(0); y++)
-            // {
-            //     for (int x = 0; x < sceneData.GetLength(1); x++)
-            //     {
-                    if (sceneData[(int)collectibleRect.y / tileSize, (int)collectibleRect.x / tileSize] == 3)
-                    {
-                        sceneData[(int)collectibleRect.y / tileSize, (int)collectibleRect.x / tileSize] = 0;
-                    }
-            //     }
-            // }
+            if (sceneData[(int)collectibleRect.y / TileSize, (int)collectibleRect.x / TileSize] == 3)
+            {
+                sceneData[(int)collectibleRect.y / TileSize, (int)collectibleRect.x / TileSize] = 0;
+            }
         }
 
         Rectangle victoryRect = CheckCollisions(playerRect, victory);
         if (victoryRect.width != 0)
         {
-            points += 10;
+            Points += 10; //10 points and changes gamestate to victory
             victory.Remove(victoryRect);
             GameState = "Victory";
-            // for (int y = 0; y < sceneData.GetLength(0); y++)
-            // {
-            //     for (int x = 0; x < sceneData.GetLength(1); x++)
-            //     {
-                    if (sceneData[(int)victoryRect.y / tileSize, (int)victoryRect.x / tileSize] == 4)
-                    {
-                        sceneData[(int)victoryRect.y / tileSize, (int)victoryRect.x / tileSize] = 0;
-                    }
-            //     }
-            // }
+            if (sceneData[(int)victoryRect.y / TileSize, (int)victoryRect.x / TileSize] == 4)
+            {
+                sceneData[(int)victoryRect.y / TileSize, (int)victoryRect.x / TileSize] = 0;
+            }
         }
-}
+    }
 
     public void Update(List<Rectangle> walls)
     {
-        
-        // läs in movement
+
         UpdateMovementVector(walls);
-        // Gör x-movement-grejen
 
         Draw();
-        // Gör y-movement-grejen
 
     }
 
@@ -381,24 +245,24 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
         {
             movement.X -= 1;
         }
-                
+
         if (movement.Length() > 0)
         {
             movement = Vector2.Normalize(movement);
         }
 
-        if (redBoots == false)
+        if (RedBoots == false)
         {
-            movement *= speed;
+            movement *= Speed;
         }
-        else if (redBoots == true)
+        else if (RedBoots == true)
         {
-            movement *= speed + 5;
+            movement *= Speed + 5;
         }
 
         playerRect.y += movement.Y;
         playerRect.x += movement.X;
-    
+
 
         static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
         {
@@ -424,42 +288,54 @@ public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Re
 
     }
 
-public void FightResult(Player player1)
-{
-        if (player1.GameState == "FightWon")
+    public void FightResult(Player Player1)
     {
-        Raylib.ClearBackground(Color.BLACK);
-        Raylib.DrawText(("You bested the foe through your courage and sheer will,"), 50, 100, 25, Color.RED);
-        Raylib.DrawText(($"slashing its body in half, exposing a morbid mess of guts"), 50, 140, 25, Color.RED);
-        Raylib.DrawText(($"and blue blood. Through the foes death, you replenished"), 50, 180, 25, Color.RED);
-        Raylib.DrawText(($"your lost vitality and gained 1 point!"), 50, 220, 25, Color.RED);
-        Raylib.DrawText(($"[Space] to return."), 50, 260, 25, Color.WHITE);
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        if (Player1.GameState == "FightWon")
         {
-            player1.GameState = "Labyrinth";
-            player1.points += 1;
+            Raylib.ClearBackground(Color.BLACK);
+            Raylib.DrawText(("You bested the foe through your courage and sheer will,"), 50, 100, 25, Color.RED);
+            Raylib.DrawText(($"slashing its body in half, exposing a morbid mess of guts"), 50, 140, 25, Color.RED);
+            Raylib.DrawText(($"and blue blood. Through the foes death, you replenished"), 50, 180, 25, Color.RED);
+            Raylib.DrawText(($"your lost vitality and gained 1 point!"), 50, 220, 25, Color.RED);
+            Raylib.DrawText(($"[Space] to return."), 50, 260, 25, Color.WHITE);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            {
+                Player1.GameState = "Labyrinth";
+                Player1.Points += 1;
+            }
+        }
+        if (Player1.GameState == "FightLost")
+        {
+            Raylib.ClearBackground(Color.BLACK);
+            Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 100, 25, Color.RED);
+            Raylib.DrawText(($"I couldn't care less tbh, but to save you some trouble"), 50, 140, 25, Color.RED);
+            Raylib.DrawText(($"I'll kill the foe you lost to. That will cost one point."), 50, 180, 25, Color.RED);
+            Raylib.DrawText(($"Oh, and you can't say no, so be happy, ungrateful swine."), 50, 220, 25, Color.RED);
+            Raylib.DrawText(($"[Space] to respawn."), 50, 260, 25, Color.WHITE);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            {
+                Player1.GameState = "Labyrinth";
+                Player1.Points -= 1;
+                Player1.playerRect.x = 400;
+                Player1.playerRect.y = -300;
+            }
         }
     }
-    if (player1.GameState == "FightLost")
-    {
-        Raylib.ClearBackground(Color.BLACK);
-        Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 100, 25, Color.RED);
-        Raylib.DrawText(($"I couldn't care less tbh, but to save you some trouble"), 50, 140, 25, Color.RED);
-        Raylib.DrawText(($"I'll kill the foe you lost to. That will cost one point."), 50, 180, 25, Color.RED);
-        Raylib.DrawText(($"Oh, and you can't say no, so be happy, ungrateful swine."), 50, 220, 25, Color.RED);
-        Raylib.DrawText(($"[Space] to respawn."), 50, 260, 25, Color.WHITE);
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
-        {
-            player1.GameState = "Labyrinth";
-            player1.points -= 1;
-            player1.playerRect.x = 400;
-            player1.playerRect.y = -300;
-        }
-    }
-}
     public void Draw()
     {
         Texture2D playerRectImage = Raylib.LoadTexture("pictures/cryingchild3.png");
         Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
+    }
+    public void Victory()
+    {
+        if (GameState == "Victory")
+    {
+        Raylib.ClearBackground(Color.BLACK);
+        Raylib.DrawText(("+10 Points!"), 50, 100, 25, Color.WHITE);
+        Raylib.DrawText(("Congratulations, you have showed at least some competence!"), 50, 180, 25, Color.RED);
+        Raylib.DrawText(($"You gained a total of {Points} points!"), 50, 220, 25, Color.RED);
+        Raylib.DrawText(($"Uhh, anyway, you'll have to leave, you kinda stink."), 50, 260, 25, Color.RED);
+        Raylib.DrawText(($"[Esc] to exit."), 50, 340, 25, Color.WHITE);
+    }
     }
 }

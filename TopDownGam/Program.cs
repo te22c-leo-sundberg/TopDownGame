@@ -11,23 +11,23 @@ Random generator = new Random();
 float GameX = 900;
 float GameY = 900;
 
-int framerate = 60;
+int Framerate = 60;
 
-int waittime = framerate / 3;
+int WaitTime = Framerate / 3;
 
 Raylib.InitWindow((int)GameX, (int)GameY, "(‿ˠ‿)");
-Raylib.SetTargetFPS(framerate);
+Raylib.SetTargetFPS(Framerate);
 
 bool CameraReal = false;
 
-int currentDialogue = 1;
+int CurrentDialogue = 1;
 
-Player player1 = new Player();
+Player Player1 = new Player();
 
-Fighter player = new Fighter();
-Fighter enemy = new Fighter();
+Fighter Player = new Fighter();//creates 2 fighters, which will give both of them an hp int and other ints.
+Fighter Enemy = new Fighter();
 
-Rectangle playerRect = new Rectangle(400, -300, player1.SizeY, player1.SizeX);
+Rectangle playerRect = new Rectangle(400, -300, Player1.SizeY, Player1.SizeX);
 
 Camera2D camera = new Camera2D();
 camera.offset = new Vector2(GameX / 2, GameY / 2);
@@ -42,7 +42,7 @@ List<Rectangle> redBoot = new();
 List<Rectangle> Lookie = new();
 List<Rectangle> Jesu = new();
 
-player1.Generation(Jesu, Lookie, redBoot, victory, collectibles, enemies, walls);
+Player1.Generation(Jesu, Lookie, redBoot, victory, collectibles, enemies, walls); //Places down hitboxes for all rectangles, neccessary to be drawn outside of labyrinth mode as otherwise, things dont dissapear after interacting with them.
 
 
 while (!Raylib.WindowShouldClose())
@@ -50,85 +50,75 @@ while (!Raylib.WindowShouldClose())
 
     Raylib.BeginDrawing();
 
-    if (player1.GameState == "Menu")
+    if (Player1.GameState == "Menu") // Simple press [Space] to enter thingy. If key pressed then GameState = Entry
     {
         Raylib.ClearBackground(Color.BLACK);
         Raylib.DrawText("Press [SPACE] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-            player1.GameState = "NamePick";
+            Player1.GameState = "Entry";
         }
     }
 
-    if (player1.GameState == "NamePick")
+    if (Player1.GameState == "Entry") //Added a countdown system to the Entry state as otherwise, pressing Space once would skip all dialogue instead of one, 20 frame cooldown on pressing space essentially and checking current dialogue
     {
         Raylib.DrawText("Welcome to my super scary labyrinth! [Space]", 50, 200, 20, Color.RED);
-        if (waittime > 0)
+        if (WaitTime > 0)
         {
-            waittime--;
-            Console.WriteLine(waittime);
+            WaitTime--;
+            Console.WriteLine(WaitTime);
         }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 1)
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && WaitTime == 0 && CurrentDialogue == 1)
         {
             Raylib.DrawText("Don't be scared now! [Space]", 50, 240, 20, Color.RED);
-            currentDialogue = 2;
-            waittime = framerate / 3;
+            CurrentDialogue = 2;
+            WaitTime = Framerate / 3;
         }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 2)
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && WaitTime == 0 && CurrentDialogue == 2)
         {
             Raylib.DrawText(("(It's pretty scary) [Space]"), 50, 280, 20, Color.RED);
-            currentDialogue = 3;
-            waittime = framerate / 3;
+            CurrentDialogue = 3;
+            WaitTime = Framerate / 3;
         }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waittime == 0 && currentDialogue == 3)
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && WaitTime == 0 && CurrentDialogue == 3) 
         {
-            player1.GameState = "Labyrinth";
+            Player1.GameState = "Labyrinth";
             CameraReal = true;
         }
-    }
+    } // After third dialogue is finished enables camera and switches to the labyrinth state
 
-    if (player1.GameState == "Labyrinth")
+    if (Player1.GameState == "Labyrinth")
     {
 
-        player1.CheckCollision(Jesu, Lookie, redBoot, victory, collectibles, enemies, walls);
+        Player1.CheckCollision(Jesu, Lookie, redBoot, victory, collectibles, enemies, walls); //checks collisions between all interactable objects, and then updates the players stats etc depending on what you collided with
 
-        camera.target = new Vector2(player1.playerRect.x + player1.SizeX / 2, player1.playerRect.x + player1.SizeY / 2);
+        camera.target = new Vector2(Player1.playerRect.x + Player1.SizeX / 2, Player1.playerRect.x + Player1.SizeY / 2);
 
         Raylib.ClearBackground(Color.BLACK);
 
         if (CameraReal == true)
         {
             // draw outside of beginmode2d to make it not affected, if player moves camera updates before player
-            camera.target = new Vector2(player1.playerRect.x + player1.SizeX / 2, player1.playerRect.y + player1.SizeY / 2);
+            camera.target = new Vector2(Player1.playerRect.x + Player1.SizeX / 2, Player1.playerRect.y + Player1.SizeY / 2);
             Raylib.BeginMode2D(camera);
+        
+        } // creates a target for the camera to follow and enables it
+            Player1.Textures(); //loads textures for all collidable things and collectibles
 
-            player1.Textures();
-
-            player1.Update(walls);
+            Player1.Update(walls); //handles all changes to the playable character, draws texture, movement and collision with walls as it uses reverse movement
 
             Raylib.EndMode2D();
 
-        }
-    }
-    
-    if (player1.GameState == "Battle")
-{
-        player.BattleMode(player, enemy, player1);
-}
-
-    player1.FightResult(player1);
-
-    if (player1.GameState == "Victory")
-    {
-        Raylib.ClearBackground(Color.BLACK);
-        Raylib.DrawText(("+10 Points!"), 50, 100, 25, Color.WHITE);
-        Raylib.DrawText(("Congratulations, you have showed at least some competence!"), 50, 180, 25, Color.RED);
-        Raylib.DrawText(($"You gained a total of {player1.points} points!"), 50, 220, 25, Color.RED);
-        Raylib.DrawText(($"Uhh, anyway, you'll have to leave, you kinda stink."), 50, 260, 25, Color.RED);
-        Raylib.DrawText(($"[Esc] to exit."), 50, 340, 25, Color.WHITE);
+        
     }
 
-    player1.StatDisplay();
+    Player.BattleMode(Player, Enemy, Player1);//if player interacts with a enemy in checkcollision, this runs
+
+    Player1.FightResult(Player1); //checks for the result of the fight, and then draws some text and adds to variables depending on the outcome, then switches gamestate back to labyrinth
+
+    Player1.Victory(); //linked with checkcollision, if player collides with the goal, gamestate becomes victory and this code happens.
+
+    Player1.StatDisplay(); //wanted an easy way of seeing if changes i made worked and if the items did stuff, so added this to show that.
 
     Raylib.EndDrawing();
 }
