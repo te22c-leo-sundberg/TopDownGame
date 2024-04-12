@@ -10,17 +10,17 @@ public class Fighter
     public int MinEnemyDmg = 5;
     public int MaxEnemyDmg = 15;
     bool InitialEncounter = true;
-    public string BattleState = "Menu"; // migrate all combat stuff into this
+    public string BattleState = "Menu";
     public string AttackType = "";
-    public void LightAttack(Fighter target)
+    public void LightAttack(Fighter target) //deduct damage from targets hp
     {
         target.hp -= LightAtkDmg;
     }
-    public void HeavyAttack(Fighter target)
+    public void HeavyAttack(Fighter target) //deduct damage from targets hp
     {
         target.hp -= HeavyAtkDmg;
     }
-    public void EnemyAttack(Fighter target)
+    public void EnemyAttack(Fighter target) //deduct damage from targets hp
     {
         EnemyAtkDmg = generator.Next(MinEnemyDmg , MaxEnemyDmg);
         target.hp -= EnemyAtkDmg;
@@ -29,7 +29,7 @@ public void BattleMode(Fighter Player, Fighter Enemy, Player Player1)
 {
     if (Player1.GameState == "Battle")
     {
-        var random = new Random();
+        var random = new Random(); 
         Raylib.ClearBackground(Color.BLACK);
 
         if (Player.hp > 0 && Enemy.hp > 0)//only runs the fight code if both of the peoples health is above 0

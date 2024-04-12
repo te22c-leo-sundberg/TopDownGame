@@ -6,8 +6,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 
-Random generator = new Random();
-
 float GameX = 900;
 float GameY = 900;
 

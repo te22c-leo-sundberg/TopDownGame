@@ -57,7 +57,7 @@ public class Player
 
     public void StatDisplay()
     {
-        if (GameState == "Labyrinth" || GameState == "Battle")
+        if (GameState == "Labyrinth" || GameState == "Battle") //draws the stats for all items and important stats
         {
             Raylib.DrawText(($"Points:{Points}"), 400, 750, 20, Color.YELLOW);
             Raylib.DrawText(($"Accuracy:{Accuracy}"), 400, 780, 20, Color.GREEN);
@@ -91,12 +91,12 @@ public class Player
     public void Generation(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
     {//based on the numbers on sceneData array, creates rectangle the size of tilesize to make them all the same and easily changable, then adds them to their list
 
-        for (int y = 0; y < sceneData.GetLength(0); y++)
+        for (int y = 0; y < sceneData.GetLength(0); y++) //gets length and number data of the array
         {
             for (int x = 0; x < sceneData.GetLength(1); x++)
             {
                 Rectangle r = new Rectangle(x * TileSize, y * TileSize, TileSize, TileSize);
-
+        //creates a rectangle, and based on the number in the sceneData array adds said rectangle to a certain list
                 if (sceneData[y, x] == 1) walls.Add(r);
                 if (sceneData[y, x] == 2) enemies.Add(r);
                 if (sceneData[y, x] == 3) collectibles.Add(r);
@@ -108,7 +108,7 @@ public class Player
             }
         }
 
-    public void Textures()
+    public void Textures() //gets length and number data of the array
     {
         for (int y = 0; y < sceneData.GetLength(0); y++)
         {
@@ -142,7 +142,7 @@ public class Player
     public void CheckCollision(List<Rectangle> Jesu, List<Rectangle> Lookie, List<Rectangle> redBoot, List<Rectangle> victory, List<Rectangle> collectibles, List<Rectangle> enemies, List<Rectangle> walls)
     {
 
-        Rectangle enemiesRect = CheckCollisions(playerRect, enemies); // creates a rectangle where playerRect and rectangle r overlap
+        Rectangle enemiesRect = CheckCollisions(playerRect, enemies); // creates a rectangle where playerRect and rectangle r overlap, that value is sent by the foreach above
         if (enemiesRect.width != 0)//if this is greater than 0, aka not equal to 0, runs the code below
         {
             if (Jesus == false) //checks if jesus is true, cause if it is, you will one shot the demon and instantly get a point, otherwise, puts your game state to battle
@@ -226,9 +226,9 @@ public class Player
 
     private void UpdateMovementVector(List<Rectangle> walls)
     {
-        movement = Vector2.Zero;
+        movement = Vector2.Zero; //makes movement a vector
 
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_S) || Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_S) || Raylib.IsKeyDown(KeyboardKey.KEY_DOWN)) //adds or subracts from movement based on key pressed
         {
             movement.Y += 1;
         }
@@ -248,10 +248,10 @@ public class Player
 
         if (movement.Length() > 0)
         {
-            movement = Vector2.Normalize(movement);
+            movement = Vector2.Normalize(movement); //normalizes movement, making movement the same even if youre going diagonally
         }
 
-        if (RedBoots == false)
+        if (RedBoots == false) //movement times speed, adds more to speed if redboots is true
         {
             movement *= Speed;
         }
@@ -261,10 +261,10 @@ public class Player
         }
 
         playerRect.y += movement.Y;
-        playerRect.x += movement.X;
+        playerRect.x += movement.X; //adds movement y to playerrect y and same for x
 
 
-        static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls)
+        static bool CheckWallCollision(Rectangle playerRect, List<Rectangle> walls) //checks for the collision between rectangles in walls and playerRect, then returns a bool
         {
             foreach (Rectangle r in walls)
             {
@@ -277,7 +277,7 @@ public class Player
             return false;
         }
 
-        if (CheckWallCollision(playerRect, walls))
+        if (CheckWallCollision(playerRect, walls)) //if the static bool above checks collisions and returns true, run this code reversing movement
         {
             playerRect.x -= movement.X;
         }
@@ -290,7 +290,7 @@ public class Player
 
     public void FightResult(Player Player1)
     {
-        if (Player1.GameState == "FightWon")
+        if (Player1.GameState == "FightWon") //if fight is won, runs this
         {
             Raylib.ClearBackground(Color.BLACK);
             Raylib.DrawText(("You bested the foe through your courage and sheer will,"), 50, 100, 25, Color.RED);
@@ -300,11 +300,11 @@ public class Player
             Raylib.DrawText(($"[Space] to return."), 50, 260, 25, Color.WHITE);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
-                Player1.GameState = "Labyrinth";
+                Player1.GameState = "Labyrinth";//adds a point, also changing gamestate to labyrinth
                 Player1.Points += 1;
             }
         }
-        if (Player1.GameState == "FightLost")
+        if (Player1.GameState == "FightLost")//if fight is lost, runs this
         {
             Raylib.ClearBackground(Color.BLACK);
             Raylib.DrawText(("Man you suck ass at this, try again, or don't,"), 50, 100, 25, Color.RED);
@@ -314,21 +314,21 @@ public class Player
             Raylib.DrawText(($"[Space] to respawn."), 50, 260, 25, Color.WHITE);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
-                Player1.GameState = "Labyrinth";
+                Player1.GameState = "Labyrinth"; //throws player back into spawn and deducts a point, also changing gamestate to labyrinth
                 Player1.Points -= 1;
                 Player1.playerRect.x = 400;
                 Player1.playerRect.y = -300;
             }
         }
     }
-    public void Draw()
+    public void Draw() //draws the texture for the player and makes it follow playerRect
     {
         Texture2D playerRectImage = Raylib.LoadTexture("pictures/cryingchild3.png");
         Raylib.DrawTexture(playerRectImage, (int)playerRect.x, (int)playerRect.y, Color.WHITE);
     }
     public void Victory()
     {
-        if (GameState == "Victory")
+        if (GameState == "Victory") //if you enter goal this runs
     {
         Raylib.ClearBackground(Color.BLACK);
         Raylib.DrawText(("+10 Points!"), 50, 100, 25, Color.WHITE);
