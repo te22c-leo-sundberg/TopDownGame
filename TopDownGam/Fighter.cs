@@ -38,7 +38,7 @@ public void BattleMode(Fighter Player, Fighter Enemy, Player Player1)
             Raylib.DrawText(($"Foe health:{Enemy.hp}"), 50, 800, 25, Color.RED);//displays health
             if (BattleState == "Menu")
             {
-                if (InitialEncounter == true)//checks if its your first encounter, and if it is, does special dialogue.
+                if (InitialEncounter == true)//checks if its your first encounter, and if it is, does special dialogue. Otherwise, asks what you want to do.
                 {
                     Raylib.DrawText(("A life-threatening foe has picked a fight with you"), 50, 100, 25, Color.RED);
                     Raylib.DrawText(("What is your decison?"), 50, 140, 25, Color.RED);
@@ -64,7 +64,7 @@ public void BattleMode(Fighter Player, Fighter Enemy, Player Player1)
             }
             if (BattleState == "Carve")//rolls for accuracy between 1 and 10, and if lookies is true, adds the lookie accuracy value onto your accuracy number
             {
-                //accuracy is used to determine if you miss or hit your attack, after, makes attack type either Carve or Puncture, then Miss or Hit too to provide correct dialogue, then makes battlestate enemy attack
+                // makes attack type either Carve or Puncture, after, then rolls accuracy to see if you hit the attack, then Miss or Hit too to provide correct dialogue, then makes battlestate enemy attack
                 Player1.Accuracy = generator.Next(1, 10);
                 if (Player1.Lookies == true) {Player1.Accuracy += Player1.LookiesAccuracy;}
                 if (Player1.Accuracy >= 2)

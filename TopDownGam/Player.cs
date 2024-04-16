@@ -115,14 +115,14 @@ public class Player
             for (int x = 0; x < sceneData.GetLength(1); x++)
             {
         //loads a texture based on the number in the sceneData array, its size being tile size
-                if (sceneData[y, x] == 1) {Raylib.DrawRectangle(x * TileSize, y * TileSize, TileSize, TileSize, Color.DARKGRAY);}
-                if (sceneData[y, x] == 2) {Raylib.DrawTexture(enemyImage, x * TileSize, y * TileSize, Color.WHITE);}
-                if (sceneData[y, x] == 3) {Raylib.DrawTexture(collectibleImage, x * TileSize, y * TileSize, Color.WHITE);}
-                if (sceneData[y, x] == 4) {Raylib.DrawTexture(goalImage, x * TileSize, y * TileSize, Color.WHITE);}
-                if (sceneData[y, x] == 5) {Raylib.DrawTexture(redbootsImage, x * TileSize, y * TileSize, Color.WHITE);}
-                if (sceneData[y, x] == 6) {Raylib.DrawTexture(lookiesImage, x * TileSize, y * TileSize, Color.WHITE);}
-                if (sceneData[y, x] == 7) {Raylib.DrawTexture(jesusImage, x * TileSize, y * TileSize, Color.WHITE);}
-                if (sceneData[y, x] == 8) {Raylib.DrawTexture(enemyGutsImage, x * TileSize, y * TileSize, Color.WHITE);}
+                if (sceneData[y, x] == 1) Raylib.DrawRectangle(x * TileSize, y * TileSize, TileSize, TileSize, Color.DARKGRAY);
+                if (sceneData[y, x] == 2) Raylib.DrawTexture(enemyImage, x * TileSize, y * TileSize, Color.WHITE);
+                if (sceneData[y, x] == 3) Raylib.DrawTexture(collectibleImage, x * TileSize, y * TileSize, Color.WHITE);
+                if (sceneData[y, x] == 4) Raylib.DrawTexture(goalImage, x * TileSize, y * TileSize, Color.WHITE);
+                if (sceneData[y, x] == 5) Raylib.DrawTexture(redbootsImage, x * TileSize, y * TileSize, Color.WHITE);
+                if (sceneData[y, x] == 6) Raylib.DrawTexture(lookiesImage, x * TileSize, y * TileSize, Color.WHITE);
+                if (sceneData[y, x] == 7) Raylib.DrawTexture(jesusImage, x * TileSize, y * TileSize, Color.WHITE);
+                if (sceneData[y, x] == 8) Raylib.DrawTexture(enemyGutsImage, x * TileSize, y * TileSize, Color.WHITE);
             }
         }
     }
@@ -130,10 +130,7 @@ public class Player
     {//checks collision between playerRect and rectangle r, if playerRect and r are colliding, returns r, otherwise, returns a new rectangle
         foreach (Rectangle r in hitBoxes)
         {
-            if (Raylib.CheckCollisionRecs(playerRect, r))
-            {
-                return r;
-            }
+            if (Raylib.CheckCollisionRecs(playerRect, r)) return r;
         }
 
         return new Rectangle();
