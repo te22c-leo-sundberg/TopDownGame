@@ -6,29 +6,27 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 
-float GameX = 900;
-float GameY = 900;
+float gameX = 900;
+float gameY = 900;
 
-int Framerate = 60;
+int framerate = 60;
 
-int WaitTime = Framerate / 3;
+int waitTime = framerate / 3;
 
-Raylib.InitWindow((int)GameX, (int)GameY, "(‿ˠ‿)");
-Raylib.SetTargetFPS(Framerate);
+Raylib.InitWindow((int)gameX, (int)gameY, "(‿ˠ‿)");
+Raylib.SetTargetFPS(framerate);
 
-bool CameraReal = false;
+bool cameraReal = false;
 
-int CurrentDialogue = 1;
+Player player1 = new Player();
 
-Player Player1 = new Player();
+Fighter player = new Fighter();//creates 2 fighters, which will give both of them an hp int and other ints.
+Fighter enemy = new Fighter();
 
-Fighter Player = new Fighter();//creates 2 fighters, which will give both of them an hp int and other ints.
-Fighter Enemy = new Fighter();
-
-Rectangle playerRect = new Rectangle(400, -300, Player1.SizeY, Player1.SizeX);
+Rectangle playerRect = new Rectangle(400, -300, player1.sizeY, player1.sizeX);
 
 Camera2D camera = new Camera2D();
-camera.offset = new Vector2(GameX / 2, GameY / 2);
+camera.offset = new Vector2(gameX / 2, gameY / 2);
 camera.rotation = 0.0f;
 camera.zoom = 1.0f;
 
@@ -37,10 +35,10 @@ List<Rectangle> enemies = new();
 List<Rectangle> collectibles = new();
 List<Rectangle> victory = new();
 List<Rectangle> redBoot = new();
-List<Rectangle> Lookie = new();
-List<Rectangle> Jesu = new();
+List<Rectangle> lookie = new();
+List<Rectangle> jesu = new();
 
-Player1.Generation(Jesu, Lookie, redBoot, victory, collectibles, enemies, walls); //Places down hitboxes for all rectangles, neccessary to be drawn outside of labyrinth mode as otherwise, things dont dissapear after interacting with them.
+player1.Generation(jesu, lookie, redBoot, victory, collectibles, enemies, walls); //Places down hitboxes for all rectangles, neccessary to be drawn outside of labyrinth mode as otherwise, things dont dissapear after interacting with them.
 
 
 while (!Raylib.WindowShouldClose())
@@ -48,75 +46,67 @@ while (!Raylib.WindowShouldClose())
 
     Raylib.BeginDrawing();
 
-    if (Player1.GameState == "Menu") // Simple press [Space] to enter thingy. If key pressed then GameState = Entry
+    if (player1.gameState == "Menu") // Simple press [Space] to enter thingy. If key pressed then GameState = Entry
     {
         Raylib.ClearBackground(Color.BLACK);
         Raylib.DrawText("Press [SPACE] to enter.", 200, 80, 20, Color.RED);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-            Player1.GameState = "Entry";
+            player1.gameState = "Entry";
         }
     }
 
-    if (Player1.GameState == "Entry") //Added a countdown system to the Entry state as otherwise, pressing Space once would skip all dialogue instead of one, 20 frame cooldown on pressing space essentially and checking current dialogue
+    if (player1.gameState == "Entry") //Added a countdown system to the Entry state as otherwise, pressing Space once would skip all dialogue instead of one, 20 frame cooldown on pressing space essentially and checking current dialogue
     {
-        Raylib.DrawText("Welcome to my super scary labyrinth! [Space]", 50, 200, 20, Color.RED);
-        if (WaitTime > 0)
+        Raylib.DrawText("Welcome to my super scary labyrinth!", 50, 200, 20, Color.RED);
+        Raylib.DrawText("Your goal is to pave your way through the labyrinth,", 50, 240, 20, Color.RED);
+        Raylib.DrawText("picking up items to speed up your progression.", 50, 280, 20, Color.RED);
+        Raylib.DrawText("Picking up stars will increase your points, so try", 50, 320, 20, Color.RED);
+        Raylib.DrawText("to aim for a high point score to feel good about yourself", 50, 360, 20, Color.RED);
+        if (waitTime > 0)
         {
-            WaitTime--;
-            Console.WriteLine(WaitTime);
+            waitTime--;
+            Console.WriteLine(waitTime);
         }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && WaitTime == 0 && CurrentDialogue == 1)
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waitTime == 0)
         {
-            Raylib.DrawText("Don't be scared now! [Space]", 50, 240, 20, Color.RED);
-            CurrentDialogue = 2;
-            WaitTime = Framerate / 3;
-        }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && WaitTime == 0 && CurrentDialogue == 2)
-        {
-            Raylib.DrawText(("(It's pretty scary) [Space]"), 50, 280, 20, Color.RED);
-            CurrentDialogue = 3;
-            WaitTime = Framerate / 3;
-        }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && WaitTime == 0 && CurrentDialogue == 3) 
-        {
-            Player1.GameState = "Labyrinth";
-            CameraReal = true;
+            player1.gameState = "Labyrinth";
+            cameraReal = true;
         }
     } // After third dialogue is finished enables camera and switches to the labyrinth state
 
-    if (Player1.GameState == "Labyrinth")
+    if (player1.gameState == "Labyrinth")
     {
 
-        Player1.CheckCollision(Jesu, Lookie, redBoot, victory, collectibles, enemies, walls); //checks collisions between all interactable objects, and then updates the players stats etc depending on what you collided with
+        player1.CheckCollision(jesu, lookie, redBoot, victory, collectibles, enemies, walls); //checks collisions between all interactable objects, and then updates the players stats etc depending on what you collided with
 
-        camera.target = new Vector2(Player1.playerRect.x + Player1.SizeX / 2, Player1.playerRect.x + Player1.SizeY / 2);
+        camera.target = new Vector2(player1.playerRect.x + player1.sizeX / 2, player1.playerRect.x + player1.sizeY / 2);
 
         Raylib.ClearBackground(Color.BLACK);
 
-        if (CameraReal == true)
+        if (cameraReal == true)
         {
             // draw outside of beginmode2d to make it not affected, if player moves camera updates before player
-            camera.target = new Vector2(Player1.playerRect.x + Player1.SizeX / 2, Player1.playerRect.y + Player1.SizeY / 2);
+            camera.target = new Vector2(player1.playerRect.x + player1.sizeX / 2, player1.playerRect.y + player1.sizeY / 2);
             Raylib.BeginMode2D(camera);
         
         } // creates a target for the camera to follow and enables it
-            Player1.Textures(); //loads textures for all collidable things and collectibles
+            player1.Textures(); //loads textures for all collidable things and collectibles
 
-            Player1.Update(walls); //handles all changes to the playable character, draws texture, movement and collision with walls as it uses reverse movement
+            player1.Update(walls); //handles all changes to the playable character, draws texture, movement and collision with walls as it uses reverse movement
 
             Raylib.EndMode2D();
 
         
     }
 
-    Player.BattleMode(Player, Enemy, Player1);//if player interacts with a enemy in checkcollision, this runs
+    player.BattleMode(player, enemy, player1);//if player interacts with a enemy in checkcollision, this runs
 
-    Player1.FightResult(Player1); //checks for the result of the fight, and then draws some text and adds to variables depending on the outcome, then switches gamestate back to labyrinth
+    player1.FightResult(player1); //checks for the result of the fight, and then draws some text and adds to variables depending on the outcome, then switches gamestate back to labyrinth
 
-    Player1.Victory(); //linked with checkcollision, if player collides with the goal, gamestate becomes victory and this code happens.
+    player1.Victory(); //linked with checkcollision, if player collides with the goal, gamestate becomes victory and this code happens.
 
-    Player1.StatDisplay(); //wanted an easy way of seeing if changes i made worked and if the items did stuff, so added this to show that.
+    player1.StatDisplay(); //wanted an easy way of seeing if changes i made worked and if the items did stuff, so added this to show that.
 
     Raylib.EndDrawing();
 }
