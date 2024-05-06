@@ -285,9 +285,9 @@ public class Player
 
     }
 
-    public void FightResult(Player Player1)
+    public void FightResult(Player player1)
     {
-        if (Player1.gameState == "FightWon") //if fight is won, runs this
+        if (player1.gameState == "FightWon") //if fight is won, runs this
         {
             Raylib.ClearBackground(Color.BLACK);
             Raylib.DrawText(("You bested the foe through your courage and sheer will,"), 50, 100, 25, Color.RED);
@@ -297,11 +297,11 @@ public class Player
             Raylib.DrawText(($"[Space] to return."), 50, 260, 25, Color.WHITE);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
-                Player1.gameState = "Labyrinth";//adds a point, also changing gamestate to labyrinth
-                Player1.points += 1;
+                player1.gameState = "Labyrinth";//adds a point, also changing gamestate to labyrinth
+                player1.points += 1;
             }
         }
-        if (Player1.gameState == "FightLost")//if fight is lost, runs this
+        if (player1.gameState == "FightLost")//if fight is lost, runs this
         {
             Raylib.ClearBackground(Color.BLACK);
             Raylib.DrawText(("You dissapoint me, however, as I do somewhat pity you"), 50, 100, 25, Color.RED);
@@ -312,10 +312,10 @@ public class Player
             Raylib.DrawText(($"[Space] to respawn."), 50, 300, 25, Color.WHITE);
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
-                Player1.gameState = "Labyrinth"; //throws player back into spawn and deducts a point, also changing gamestate to labyrinth
-                Player1.points -= 1;
-                Player1.playerRect.x = 400;
-                Player1.playerRect.y = -300;
+                player1.gameState = "Labyrinth"; //throws player back into spawn and deducts a point, also changing gamestate to labyrinth
+                player1.points -= 1;
+                player1.playerRect.x = 400;
+                player1.playerRect.y = -300;
             }
         }
     }
