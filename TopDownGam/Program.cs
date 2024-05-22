@@ -18,6 +18,8 @@ Raylib.SetTargetFPS(framerate);
 
 bool cameraReal = false;
 
+int dialogueState = 1;
+
 Player player1 = new Player();
 
 Fighter player = new Fighter();//creates 2 fighters, which will give both of them an hp int and other ints.
@@ -58,20 +60,35 @@ while (!Raylib.WindowShouldClose())
 
     if (player1.gameState == "Entry") //Added a countdown system to the Entry state as otherwise, pressing Space once would skip all dialogue instead of one, 20 frame cooldown on pressing space essentially and checking current dialogue
     {
-        Raylib.DrawText("Welcome to my super scary labyrinth!", 50, 200, 20, Color.RED);
-        Raylib.DrawText("Your goal is to pave your way through the labyrinth,", 50, 240, 20, Color.RED);
-        Raylib.DrawText("picking up items to speed up your progression.", 50, 280, 20, Color.RED);
-        Raylib.DrawText("Picking up stars will increase your points, so try", 50, 320, 20, Color.RED);
-        Raylib.DrawText("to aim for a high point score to feel good about yourself", 50, 360, 20, Color.RED);
+        Raylib.ClearBackground(Color.BLACK);
         if (waitTime > 0)
         {
             waitTime--;
             Console.WriteLine(waitTime);
         }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waitTime == 0)
+        if (dialogueState == 1)
         {
-            player1.gameState = "Labyrinth";
-            cameraReal = true;
+            Raylib.DrawText("Welcome to my super scary labyrinth!", 50, 200, 20, Color.RED);
+            Raylib.DrawText("Your goal is to pave your way through the labyrinth,", 50, 240, 20, Color.RED);
+            Raylib.DrawText("picking up items to speed up your progression.", 50, 280, 20, Color.RED);
+            Raylib.DrawText("Picking up stars will increase your points, so try", 50, 320, 20, Color.RED);
+            Raylib.DrawText("to aim for a high point score to feel good about yourself", 50, 360, 20, Color.RED);
+            Raylib.DrawText("Press [SPACE] to proceed.", 50, 400, 20, Color.WHITE);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waitTime == 0)
+            {
+                waitTime += 20;
+                dialogueState = 2;
+            }
+        }
+        if (dialogueState == 2)
+        {
+            Raylib.DrawText("Use [W] [A] [S] [D] or the [Arrow Keys] to move around.", 50, 200, 20, Color.RED);
+            Raylib.DrawText("Press [SPACE] to proceed.", 50, 240, 20, Color.WHITE);
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && waitTime == 0)
+            {
+                player1.gameState = "Labyrinth";
+                cameraReal = true;
+            }
         }
     } // After third dialogue is finished enables camera and switches to the labyrinth state
 
